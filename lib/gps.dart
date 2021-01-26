@@ -1,1 +1,3 @@
-class Gps {}
+class Gps {
+  var test = 0;
+}
