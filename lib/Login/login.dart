@@ -64,47 +64,45 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-      body: new Container (
+      body: new Container(
         padding: EdgeInsets.all(50.0),
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              alignment: Alignment(0,-5),
-              image: AssetImage("images/background.png"),
-              fit: BoxFit.fitWidth,
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            alignment: Alignment(0, -5),
+            image: AssetImage("images/background.png"),
+            fit: BoxFit.fitWidth,
+          ),
+        ),
+        alignment: Alignment.center,
+        child: new Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: <Widget>[
+            Align(
+              alignment: Alignment.center,
+              child: Image.asset(
+                'images/annecyGoTitle.png',
+                fit: BoxFit.fitWidth,
+              ),
             ),
-          ),
-          alignment: Alignment.center,
-          child : new Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: <Widget>[
-              Align(
-                alignment: Alignment.center,
-                child: Image.asset(
-                  'images/annecyGoTitle.png',
-                  fit: BoxFit.fitWidth,
-                ),
-              ),
-              Align(
-                alignment: Alignment.center,
-                child:  _buildTextFields(),
-              ),
-              Align(
-                alignment: Alignment.center,
-                child:    _buildButtons(),
-              ),
-            ],
-          ),
+            Align(
+              alignment: Alignment.center,
+              child: _buildTextFields(),
+            ),
+            Align(
+              alignment: Alignment.center,
+              child: _buildButtons(),
+            ),
+          ],
+        ),
       ),
     );
   }
 
   Widget _buildTextFields() {
     return new Container(
-
       child: new Column(
         children: <Widget>[
           new Container(
-
             child: new TextField(
               controller: _emailFilter,
               decoration: new InputDecoration(labelText: 'Email'),
@@ -123,41 +121,54 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Widget _buildButtons() {
-    if (_form == FormType.login) {
-      return new Container(
-        child: new Column(
-          children: <Widget>[
-            new RaisedButton(
-              child: new Text('Login'),
+    return new Container(
+
+      child: new Column(
+
+        children: <Widget>[
+
+          Container(
+            margin: const EdgeInsets.only(bottom: 20.0),
+            child:ButtonTheme(
+            minWidth: 200.0,
+
+            child: new RaisedButton(
+
+              color: Colors.white,
+              child: new Text(
+                'Login',
+                style:
+                TextStyle(
+                  fontWeight: FontWeight.w400,
+                  color: Colors.black45,
+                  fontSize: 40,
+                ),
+              ),
               onPressed: _loginPressed,
             ),
-            new FlatButton(
-              child: new Text('Dont have an account? Tap here to register.'),
-              onPressed: _formChange,
+          ),),
+
+          ButtonTheme(
+            minWidth: 200.0,
+
+            child: new RaisedButton(
+              color: Colors.white,
+              child: new Text(
+                'Register',
+                style:
+                TextStyle(
+                  fontWeight: FontWeight.w400,
+                  color: Colors.black45,
+                  fontSize: 40,
+                ),
+              ),
+              onPressed: _loginPressed,
             ),
-            new FlatButton(
-              child: new Text('Forgot Password?'),
-              onPressed: _passwordReset,
-            )
-          ],
-        ),
-      );
-    } else {
-      return new Container(
-        child: new Column(
-          children: <Widget>[
-            new RaisedButton(
-              child: new Text('Create an Account'),
-              onPressed: _createAccountPressed,
-            ),
-            new FlatButton(
-              child: new Text('Have an account? Click here to login.'),
-              onPressed: _formChange,
-            )
-          ],
-        ),
-      );
-    }
+          ),
+
+        ],
+      ),
+    );
   }
 
   // These functions can self contain any user auth logic required, they all have access to _email and _password
@@ -166,11 +177,7 @@ class _LoginPageState extends State<LoginPage> {
     print('The user wants to login with $_email and $_password');
   }
 
-  void _createAccountPressed() {
-    print('The user wants to create an accoutn with $_email and $_password');
-  }
-
-  void _passwordReset() {
-    print("The user wants a password reset request sent to $_email");
+  void _RegisterPressed() {
+    print('The user wants to login with $_email and $_password');
   }
 }
