@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "7698209005",
+    "project_id": "annecygo-4d455",
+    "storage_bucket": "annecygo-4d455.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:7698209005:android:69322452bff030f33e54e4",
+        "android_client_info": {
+          "package_name": "com.example.annecygo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "7698209005-v7rau00166o568cu803ue61cu8mtotce.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCMGNpfrDRnqbTuI_hwAmgYwXd9MEAYadA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "7698209005-v7rau00166o568cu803ue61cu8mtotce.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
