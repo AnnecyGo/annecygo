@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import "Map/MainMap.dart" as Map;
 
 void main() {
   runApp(MyApp());
@@ -28,7 +29,7 @@ class MyApp extends StatelessWidget {
         // closer together (more dense) than on mobile platforms.
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      home: MyHomePage(title: 'AnnecyGo Home Page'),
     );
   }
 }
@@ -82,20 +83,21 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Center(
         // Center is a layout widget. It takes a single child and positions it
         // in the middle of the parent.
-          child: FlatButton(
-            onPressed: () {
-              /*...*/
-            },
-            child: Text(
-              "Flat Button",
-            ),
+        child: FlatButton(
+          onPressed: () {
+            //runApp(Map.TestApp());
+            runApp(Map.StatefulMarkersPage());
+          },
+          child: Text(
+            "Go to map",
           ),
+        ),
       ),
-      floatingActionButton: FloatingActionButton(
+      /*  floatingActionButton: FloatingActionButton(
         onPressed: _incrementCounter,
         tooltip: 'Increment',
         child: Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      ), // This trailing comma makes auto-formatting nicer for build methods. */
     );
   }
 }
