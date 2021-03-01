@@ -26,7 +26,7 @@ class _TestAppState extends State<TestApp> {
   StreamSubscription<StatefulMapControllerStateChange> sub;
 
   Future<http.Response> fetchMonuments() {
-    return http.get(Uri.http('86.200.111.40:1331', 'annecyRandomMonuments'));
+    return http.get(Uri.http('86.200.111.40:1332', 'annecyRandomMonuments'));
   }
 
   @override
