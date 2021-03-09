@@ -33,7 +33,7 @@ dependencies:
 
   http: ^0.12.2
 
-  location: ^3.2.4
+ # location: ^3.2.4
 
 dev_dependencies:
   flutter_test:
