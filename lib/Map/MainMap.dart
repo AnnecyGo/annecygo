@@ -92,23 +92,28 @@ class _MapPageState extends State<MapPage> {
           child: FlutterMap(
         mapController: mapController,
         options: MapOptions(
+
           center: LatLng(45.899247, 6.129384),
           zoom: 13.0,
         ),
         layers: [
+
           statefulMapController.tileLayer,
           MarkerLayerOptions(
             markers: statefulMapController.markers,
           ),
         ],
-      )),
+
+      )
+      ),
       floatingActionButton: loaded
           ? FloatingActionButton(
               onPressed: () => addMarker(context),
               child: Icon(Icons.refresh),
             )
           : CircularProgressIndicator(),
-    ));
+    )
+    );
   }
 
   @override

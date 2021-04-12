@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'Games/TrueFalsePage.dart';
 import 'Login/login.dart';
 import 'Map/MainMap.dart';
 
@@ -12,9 +13,18 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Annecy Go',
+
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+
+        primaryColor: Colors.white,
+        accentColor: Colors.redAccent,
         visualDensity: VisualDensity.adaptivePlatformDensity,
+        textTheme: TextTheme(
+          headline1: TextStyle(fontSize: 72.0, fontWeight: FontWeight.bold),
+          headline6: TextStyle(fontSize: 36.0, fontStyle: FontStyle.italic),
+          bodyText2: TextStyle(fontSize: 14.0, fontFamily: 'Hind'),
+        ),
+
       ),
       home: MyHomePage(title: 'AnnecyGo Home Page'),
     );
@@ -38,7 +48,8 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text(widget.title),
       ),
       body: Center(
-        child: LoginRoute()
+        child: LoginRoute(),
+        //child: TestTrueFalse(),
       ),
 
     );
@@ -61,4 +72,7 @@ class LoginRoute extends StatelessWidget {
     );
   }
 }
+
+
+
 
