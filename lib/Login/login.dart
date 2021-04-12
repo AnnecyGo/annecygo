@@ -1,21 +1,10 @@
+import 'package:annecygo/Map/MainMap.dart';
 import 'package:flutter/material.dart';
 
-void main() => runApp(new MyApp());
-
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return new MaterialApp(
-      title: 'Login Page',
-      theme: new ThemeData(primarySwatch: Colors.red),
-      home: new LoginPage(),
-    );
-  }
-}
 
 class LoginPage extends StatefulWidget {
   @override
-  State<StatefulWidget> createState() => new _LoginPageState();
+  _LoginPageState createState() => _LoginPageState();
 }
 
 // Used for controlling whether the user is loggin or creating an account
@@ -61,42 +50,7 @@ class _LoginPageState extends State<LoginPage> {
     });
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return new Scaffold(
-      body: new Container(
-        padding: EdgeInsets.all(50.0),
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            alignment: Alignment(0, -5),
-            image: AssetImage("images/background.png"),
-            fit: BoxFit.fitWidth,
-          ),
-        ),
-        alignment: Alignment.center,
-        child: new Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: <Widget>[
-            Align(
-              alignment: Alignment.center,
-              child: Image.asset(
-                'images/annecyGoTitle.png',
-                fit: BoxFit.fitWidth,
-              ),
-            ),
-            Align(
-              alignment: Alignment.center,
-              child: _buildTextFields(),
-            ),
-            Align(
-              alignment: Alignment.center,
-              child: _buildButtons(),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
+
 
   Widget _buildTextFields() {
     return new Container(
@@ -175,9 +129,55 @@ class _LoginPageState extends State<LoginPage> {
 
   void _loginPressed() {
     print('The user wants to login with $_email and $_password');
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => MapPage()),
+    );
   }
 
   void _RegisterPressed() {
     print('The user wants to login with $_email and $_password');
   }
-}
+
+
+    @override
+    Widget build(BuildContext context) {
+      return new Scaffold(
+        body: new Container(
+          padding: EdgeInsets.all(50.0),
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              alignment: Alignment(0, -5),
+              image: AssetImage("images/background.png"),
+              fit: BoxFit.fitWidth,
+            ),
+          ),
+          alignment: Alignment.center,
+          child: new Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              Align(
+                alignment: Alignment.center,
+                child: Image.asset(
+                  'images/annecyGoTitle.png',
+                  fit: BoxFit.fitWidth,
+                ),
+              ),
+              Align(
+                alignment: Alignment.center,
+                child: _buildTextFields(),
+              ),
+              Align(
+                alignment: Alignment.center,
+                child: _buildButtons(),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+  }
+
+
+
+

@@ -8,7 +8,12 @@ import 'package:http/http.dart' as http;
 import 'package:map_controller/map_controller.dart';
 //import 'package:location/location.dart';
 
-class _StatefulMarkersPageState extends State<StatefulMarkersPage> {
+
+class MapPage extends StatefulWidget {
+  @override
+  _MapPageState createState() => _MapPageState();
+}
+class _MapPageState extends State<MapPage> {
   MapController mapController;
   StatefulMapController statefulMapController;
   StreamSubscription<StatefulMapControllerStateChange> sub;
@@ -112,7 +117,4 @@ class _StatefulMarkersPageState extends State<StatefulMarkersPage> {
   }
 }
 
-class StatefulMarkersPage extends StatefulWidget {
-  @override
-  _StatefulMarkersPageState createState() => _StatefulMarkersPageState();
-}
+
