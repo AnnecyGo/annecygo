@@ -7,6 +7,7 @@ import 'dart:ui';
 import 'dart:io';
 import 'package:flutter/rendering.dart';
 import 'package:path_provider/path_provider.dart';
+import '../Map/MainMap.dart';
 
 void main() => runApp(MyApp());
 
@@ -41,6 +42,11 @@ class GenerateScreenState extends State<GenerateScreen> {
   String _dataString = "Hello from this QR";
   String _inputErrorText;
   final TextEditingController _textController =  TextEditingController();
+
+  Future navigateToMap(context) async {
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => StatefulMarkersPage()));
+  }
 
 
   @override
@@ -118,19 +124,19 @@ class GenerateScreenState extends State<GenerateScreen> {
                       ),
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 10.0),
-                    child:  FlatButton(
-                      child:  Text("X"),
-                      onPressed: () {
-                        setState((){
-                          _dataString = _textController.text;
-                          _inputErrorText = null;
-                        });
-                      },
-                    ),
-                  )
                 ],
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(
+              top: 330,
+              left: 20.0,
+              right: 10.0,
+            ),
+            child: Expanded(
+              child:  Text(
+                "SCAN LE QRCODE POUR REJOINDRE"
               ),
             ),
           ),
@@ -140,9 +146,23 @@ class GenerateScreenState extends State<GenerateScreen> {
                 key: globalKey,
                 child: QrImage(
                   data: _dataString,
-                  size: 0.5 * bodyHeight,
+                  size: 200 ,
                 ),
               ),
+            ),
+          ),
+          SizedBox(
+            width: 400,
+            height: 100,
+            child: RaisedButton(
+              onPressed: () {
+                navigateToMap(context);
+              },
+              child: const Text("LET'S GO", style: TextStyle(fontSize: 50,
+                  color: Colors.white,
+                  fontFamily: 'BigNoodleTitling',
+                  fontStyle: FontStyle.italic)),
+              color: Colors.red,
             ),
           ),
         ],
