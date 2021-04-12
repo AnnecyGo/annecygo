@@ -1,16 +1,54 @@
 import 'package:annecygo/Map/MainMap.dart';
 import 'package:flutter/material.dart';
-
+import 'package:annecygo/Map/MainMap.dart';
 
 class LoginPage extends StatefulWidget {
   @override
   _LoginPageState createState() => _LoginPageState();
 }
 
-// Used for controlling whether the user is loggin or creating an account
+// Used for controlling whether the user is loging or creating an account
 enum FormType { login, register }
 
 class _LoginPageState extends State<LoginPage> {
+
+  @override
+  Widget build(BuildContext context) {
+    return new Scaffold(
+      body: new Container(
+        padding: EdgeInsets.all(50.0),
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            alignment: Alignment(0, -5),
+            image: AssetImage("images/background.png"),
+            fit: BoxFit.fitWidth,
+          ),
+        ),
+        alignment: Alignment.center,
+        child: new Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: <Widget>[
+            Align(
+              alignment: Alignment.center,
+              child: Image.asset(
+                'images/annecyGoTitle.png',
+                fit: BoxFit.fitWidth,
+              ),
+            ),
+            Align(
+              alignment: Alignment.center,
+              child: _buildTextFields(),
+            ),
+            Align(
+              alignment: Alignment.center,
+              child: _buildButtons(),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
   final TextEditingController _emailFilter = new TextEditingController();
   final TextEditingController _passwordFilter = new TextEditingController();
   String _email = "";
