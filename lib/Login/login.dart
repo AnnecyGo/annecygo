@@ -16,33 +16,24 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return new Scaffold(
       body: new Container(
-        padding: EdgeInsets.all(50.0),
+        padding: EdgeInsets.fromLTRB(20,70,20,50),
         decoration: BoxDecoration(
           image: DecorationImage(
-            alignment: Alignment(0, -5),
+            alignment: Alignment(0, 10),
             image: AssetImage("images/background.png"),
             fit: BoxFit.fitWidth,
           ),
         ),
-        alignment: Alignment.center,
         child: new Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            Align(
-              alignment: Alignment.center,
-              child: Image.asset(
-                'images/annecyGoTitle.png',
-                fit: BoxFit.fitWidth,
-              ),
+            Image.asset(
+              'images/annecyGoTitle.png',
+              fit: BoxFit.fitWidth,
             ),
-            Align(
-              alignment: Alignment.center,
-              child: _buildTextFields(),
-            ),
-            Align(
-              alignment: Alignment.center,
-              child: _buildButtons(),
-            ),
+             _buildTextFields(),
+             _buildButtons(),
+
           ],
         ),
       ),
@@ -123,15 +114,25 @@ class _LoginPageState extends State<LoginPage> {
             child:ButtonTheme(
             minWidth: 200.0,
 
-            child: new RaisedButton(
+            child: new ElevatedButton(
+              style: ButtonStyle(
+                  padding: MaterialStateProperty.all(EdgeInsets.fromLTRB(20,10,20,10)),
+                  minimumSize: MaterialStateProperty.all(Size(250.0,20.0)),
+                  backgroundColor: MaterialStateProperty.all<Color>(Colors.white) ,
+                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                      RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                          side: BorderSide(color: Colors.white),
 
-              color: Colors.white,
+                      )
+                  )
+              ),
               child: new Text(
-                'Login',
+                'LOGIN',
                 style:
                 TextStyle(
-                  fontWeight: FontWeight.w400,
-                  color: Colors.black45,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.black54,
                   fontSize: 40,
                 ),
               ),
@@ -142,14 +143,24 @@ class _LoginPageState extends State<LoginPage> {
           ButtonTheme(
             minWidth: 200.0,
 
-            child: new RaisedButton(
-              color: Colors.white,
+            child: new ElevatedButton(
+              style: ButtonStyle(
+                  padding: MaterialStateProperty.all(EdgeInsets.fromLTRB(20,10,20,10)),
+                  backgroundColor: MaterialStateProperty.all<Color>(Colors.white) ,
+                  minimumSize: MaterialStateProperty.all(Size(250.0,20.0)),
+                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                      RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                        side: BorderSide(color: Colors.white),
+                      )
+                  )
+              ),
               child: new Text(
-                'Register',
+                'REGISTER',
                 style:
                 TextStyle(
-                  fontWeight: FontWeight.w400,
-                  color: Colors.black45,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.black54,
                   fontSize: 40,
                 ),
               ),

@@ -112,6 +112,7 @@ class _MapPageState extends State<MapPage> {
               child: Icon(Icons.refresh),
             )
           : CircularProgressIndicator(),
+
     )
     );
   }

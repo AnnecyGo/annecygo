@@ -43,41 +43,120 @@ class _TrueFalsePageState extends State<TrueFalsePage> {
       ),
       body: new Center(
       child : new Container(
+        decoration : BoxDecoration(
+      gradient: LinearGradient(
+      begin: Alignment.topLeft,
+        end: Alignment.bottomRight,
+        stops: [
+          0.5,
+          0.5,
+        ],
+        colors: [
+          Colors.red,
+          Colors.redAccent,
+        ],
+      ),
+      ),
         margin: const EdgeInsets.only(bottom: 20.0),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Text(currentQuestion.question,
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 48,
-              )),
-            RaisedButton(
-              child: new Text(
-                'VRAI',
-                style:
-                TextStyle(
-                  fontWeight: FontWeight.w400,
-                  color: Colors.black45,
-                  fontSize: 40,
-                ),
-              ),
-                onPressed: () => answerValidation(true)
+            Container(
+              padding: EdgeInsets.fromLTRB(20, 20, 20, 20),
+              child: Text(currentQuestion.question,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 48,
+                  )),
             ),
-            RaisedButton(
-                child: new Text(
-                  'FAUX',
-                  style:
-                  TextStyle(
-                    fontWeight: FontWeight.w400,
-                    color: Colors.black45,
-                    fontSize: 40,
+            new Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Container(
+                  decoration : BoxDecoration(
+                    borderRadius: BorderRadius.circular(10.0),
+                    gradient: LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                      stops: [
+                        0.5,
+                        0.5,
+                      ],
+                      colors: [
+                        Colors.greenAccent,
+                        Colors.green,
+                      ],
+                    ),
+                  ),
+                  child : ElevatedButton(
+                      style: ButtonStyle(
+                          padding: MaterialStateProperty.all(EdgeInsets.fromLTRB(40,10,40,10)),
+                          backgroundColor: MaterialStateProperty.all<Color>(Colors.transparent) ,
+                          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                              RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10.0),
+                                side: BorderSide(color: Colors.black),
+
+                              )
+                          )
+                      ),
+
+                      child: new Text(
+                        'VRAI',
+                        style:
+                        TextStyle(
+                          fontWeight: FontWeight.w700,
+                          color: Colors.black87,
+                          fontSize: 36,
+                        ),
+                      ),
+                      onPressed: () => answerValidation(true)
                   ),
                 ),
-                onPressed: () => answerValidation(false)
-            ),
+                Container(
+                  decoration : BoxDecoration(
+                    borderRadius: BorderRadius.circular(10.0),
+                    gradient: LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                      stops: [
+                        0.5,
+                        0.5,
+                      ],
+                      colors: [
+                        Colors.redAccent,
+                        Colors.red,
+                      ],
+                    ),
+                  ),
+                child : ElevatedButton(
+                    style: ButtonStyle(
+                        padding: MaterialStateProperty.all(EdgeInsets.fromLTRB(40,10,40,10)),
+                        backgroundColor: MaterialStateProperty.all<Color>(Colors.transparent) ,
+                        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                            RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                              side: BorderSide(color: Colors.black),
 
+                            )
+                        )
+                    ),
+                    child: new Text(
+                      'FAUX',
+                      style:
+                      TextStyle(
+                        fontWeight: FontWeight.w700,
+                        color: Colors.black87,
+                        fontSize: 36,
+                      ),
+                    ),
+                    onPressed: () => answerValidation(false)
+                ),
+                ),
+              ],
+            )
           ],
         ),
       ),
