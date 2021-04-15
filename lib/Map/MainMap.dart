@@ -6,7 +6,6 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong/latlong.dart';
 import 'package:http/http.dart' as http;
 import 'package:map_controller/map_controller.dart';
-//import 'package:location/location.dart';
 
 class _StatefulMarkersPageState extends State<StatefulMarkersPage> {
   MapController mapController;
