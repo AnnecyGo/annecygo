@@ -14,6 +14,7 @@ Depuis l’épidémie de CoVID-19, le champ social s’est écroulé et de ce fa
  
 Avec cette situation actuelle, l’économie d’Annecy est en forte baisse dû à la fermeture des restaurants, des bars et autres petits commerces. Nous espérons avec notre application, relancer l’économie d’Annecy en amenant des jeunes dans les restaurants, les bars et autres petits commerces, en offrant des bons de réduction pour les amener à consommer. Nous espérons que cette situation actuelle ne sera pas de longue durée, pour la réouverture des commerces.
 
+![Capture_decran_2021-04-14_a_19 56 05](https://user-images.githubusercontent.com/71330622/114923094-b2c5f700-9e2c-11eb-8ba0-d02aece8ab4d.png)
 
 
 
