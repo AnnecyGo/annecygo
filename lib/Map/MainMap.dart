@@ -8,7 +8,13 @@ import 'package:http/http.dart' as http;
 import 'package:map_controller/map_controller.dart';
 //import 'package:location/location.dart';
 
-class _StatefulMarkersPageState extends State<StatefulMarkersPage> {
+class MapPage extends StatefulWidget {
+  @override
+  _MapPageState createState() => _MapPageState();
+}
+
+
+class _MapPageState extends State<MapPage> {
   MapController mapController;
   StatefulMapController statefulMapController;
   StreamSubscription<StatefulMapControllerStateChange> sub;
@@ -86,23 +92,29 @@ class _StatefulMarkersPageState extends State<StatefulMarkersPage> {
           child: FlutterMap(
         mapController: mapController,
         options: MapOptions(
+
           center: LatLng(45.899247, 6.129384),
           zoom: 13.0,
         ),
         layers: [
+
           statefulMapController.tileLayer,
           MarkerLayerOptions(
             markers: statefulMapController.markers,
           ),
         ],
-      )),
+
+      )
+      ),
       floatingActionButton: loaded
           ? FloatingActionButton(
               onPressed: () => addMarker(context),
               child: Icon(Icons.refresh),
             )
           : CircularProgressIndicator(),
-    ));
+
+    )
+    );
   }
 
   @override
@@ -112,7 +124,4 @@ class _StatefulMarkersPageState extends State<StatefulMarkersPage> {
   }
 }
 
-class StatefulMarkersPage extends StatefulWidget {
-  @override
-  _StatefulMarkersPageState createState() => _StatefulMarkersPageState();
-}
+
