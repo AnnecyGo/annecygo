@@ -45,7 +45,7 @@ class GenerateScreenState extends State<GenerateScreen> {
 
   Future navigateToMap(context) async {
     Navigator.push(
-        context, MaterialPageRoute(builder: (context) => StatefulMarkersPage()));
+        context, MaterialPageRoute(builder: (context) => MapPage()));
   }
 
 
