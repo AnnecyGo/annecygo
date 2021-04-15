@@ -1,6 +1,7 @@
 import 'package:annecygo/Games/TrueFalsePage.dart';
 import 'package:flutter/material.dart';
 import 'package:annecygo/Map/MainMap.dart';
+import '../ActionMenu/actionMenu.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -31,8 +32,8 @@ class _LoginPageState extends State<LoginPage> {
               'images/annecyGoTitle.png',
               fit: BoxFit.fitWidth,
             ),
-             _buildTextFields(),
-             _buildButtons(),
+            _buildTextFields(),
+            _buildButtons(),
 
           ],
         ),
@@ -112,33 +113,33 @@ class _LoginPageState extends State<LoginPage> {
           Container(
             margin: const EdgeInsets.only(bottom: 20.0),
             child:ButtonTheme(
-            minWidth: 200.0,
+              minWidth: 200.0,
 
-            child: new ElevatedButton(
-              style: ButtonStyle(
-                  padding: MaterialStateProperty.all(EdgeInsets.fromLTRB(20,10,20,10)),
-                  minimumSize: MaterialStateProperty.all(Size(250.0,20.0)),
-                  backgroundColor: MaterialStateProperty.all<Color>(Colors.white) ,
-                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                      RoundedRectangleBorder(
+              child: new ElevatedButton(
+                style: ButtonStyle(
+                    padding: MaterialStateProperty.all(EdgeInsets.fromLTRB(20,10,20,10)),
+                    minimumSize: MaterialStateProperty.all(Size(250.0,20.0)),
+                    backgroundColor: MaterialStateProperty.all<Color>(Colors.white) ,
+                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10.0),
                           side: BorderSide(color: Colors.white),
 
-                      )
-                  )
-              ),
-              child: new Text(
-                'LOGIN',
-                style:
-                TextStyle(
-                  fontWeight: FontWeight.w600,
-                  color: Colors.black54,
-                  fontSize: 40,
+                        )
+                    )
                 ),
+                child: new Text(
+                  'LOGIN',
+                  style:
+                  TextStyle(
+                    fontWeight: FontWeight.w600,
+                    color: Colors.black54,
+                    fontSize: 40,
+                  ),
+                ),
+                onPressed: _loginPressed,
               ),
-              onPressed: _loginPressed,
-            ),
-          ),),
+            ),),
 
           ButtonTheme(
             minWidth: 200.0,
@@ -183,7 +184,7 @@ class _LoginPageState extends State<LoginPage> {
     print('The user wants to login with $_email and $_password');
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => MapPage()),
+      MaterialPageRoute(builder: (context) => ActionMenuPage()),
     );
   }
 

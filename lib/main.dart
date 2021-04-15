@@ -4,10 +4,10 @@ import 'Login/login.dart';
 import 'Map/MainMap.dart';
 
 void main() {
-  runApp(AnnecyGo());
+  runApp(MyApp());
 }
 
-class AnnecyGo extends StatelessWidget {
+class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -30,7 +30,3 @@ class AnnecyGo extends StatelessWidget {
     );
   }
 }
-
-
-
-
