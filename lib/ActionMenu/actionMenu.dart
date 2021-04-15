@@ -1,89 +1,123 @@
 import 'package:flutter/material.dart';
-
 import 'actionCreer.dart';
 import 'actionRejoindre.dart';
 
-void main() => runApp(MyApp());
-
-/// This is the main application widget.
-class MyApp extends StatelessWidget {
-  static const String _title = 'Page Action Menu';
-
+class ActionMenuPage extends StatefulWidget {
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: _title,
-      theme: new ThemeData(primarySwatch: Colors.red, fontFamily: 'BigNoodleTitiling'),
-      home: new ActionMenuPage(),
-    );
-  }
+  _ActionMenuPageState createState() => _ActionMenuPageState();
 }
 
-/// This is the stateless widget that the main application instantiates.
-class ActionMenuPage extends StatelessWidget {
-  ActionMenuPage({Key key}) : super(key: key);
-
-  Future navigateToActionCreer(context) async {
-    Navigator.push(
-        context, MaterialPageRoute(builder: (context) => GenerateScreen()));
-  }
-
-  Future navigateToActionRejoindre(context) async {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => ScanQR()));
-  }
-
+class _ActionMenuPageState extends State<ActionMenuPage> {
 
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-      body: new Container (
-        padding: EdgeInsets.all(50.0),
+      body: new Container(
+        padding: EdgeInsets.fromLTRB(20, 70, 20, 50),
         decoration: BoxDecoration(
           image: DecorationImage(
-            alignment: Alignment(0, -5),
+            alignment: Alignment(0, 10),
             image: AssetImage("images/background.png"),
             fit: BoxFit.fitWidth,
           ),
         ),
-        alignment: Alignment.center,
         child: new Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            Align(
-              alignment: Alignment.center,
-              child: Image.asset(
-                'images/annecyGoTitle.png',
-                fit: BoxFit.fitWidth,
-              ),
+            Image.asset(
+              'images/annecyGoTitle.png',
+              fit: BoxFit.fitWidth,
             ),
-            SizedBox(
-              width: 200,
-              height: 50,
-              child: RaisedButton(
-                onPressed: () {
-                  navigateToActionCreer(context);
-                },
-                child: const Text('CREER', style: TextStyle(fontSize: 20,
-                    fontFamily: 'BigNoodleTitling',
-                    fontStyle: FontStyle.italic)),
-                color: Colors.white,
-              ),
-            ),
-            SizedBox(
-              width: 200,
-              height: 50,
-              child: RaisedButton(
-                onPressed: () {
-                  navigateToActionRejoindre(context);
-                },
-                child: const Text('REJOINDRE', style: TextStyle(fontSize: 20,
-                    fontFamily: 'BigNoodleTitling',
-                    fontStyle: FontStyle.italic)),
-                color: Colors.white,
-              ),
-            ),
+            _buildButtons(),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _buildButtons() {
+    return new Container(
+      child: new Column(
+        children: <Widget>[
+          Container(
+            margin: const EdgeInsets.only(bottom: 40.0),
+            child: ButtonTheme(
+              minWidth: 200.0,
+              child: new ElevatedButton(
+                style: ButtonStyle(
+                    padding: MaterialStateProperty.all(
+                        EdgeInsets.fromLTRB(20, 10, 20, 10)),
+                    minimumSize: MaterialStateProperty.all(Size(250.0, 20.0)),
+                    backgroundColor: MaterialStateProperty.all<Color>(
+                        Colors.white),
+                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                          side: BorderSide(color: Colors.white),
+
+                        )
+                    )
+                ),
+                child: new Text(
+                  'CREER',
+                  style:
+                  TextStyle(
+                    fontWeight: FontWeight.w600,
+                    color: Colors.black54,
+                    fontSize: 40,
+                  ),
+                ),
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => GenerateScreen())
+                  );
+                },
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(
+              top: 50.0,
+              left: 20.0,
+              right: 10.0,
+              bottom: 150.0,
+            ),
+          child: ButtonTheme(
+            minWidth: 200.0,
+          child: new ElevatedButton(
+              style: ButtonStyle(
+                  padding: MaterialStateProperty.all(
+                      EdgeInsets.fromLTRB(20, 10, 20, 10)),
+                  backgroundColor: MaterialStateProperty.all<Color>(
+                      Colors.white),
+                  minimumSize: MaterialStateProperty.all(Size(250.0, 20.0)),
+                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                      RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                        side: BorderSide(color: Colors.white),
+                      )
+                  )
+              ),
+              child: new Text(
+                'REJOINDRE',
+                style:
+                TextStyle(
+                  fontWeight: FontWeight.w600,
+                  color: Colors.black54,
+                  fontSize: 40,
+                ),
+              ),
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => ScanQR())
+                );
+              },
+            ),
+          ),
+          ),
+        ],
       ),
     );
   }

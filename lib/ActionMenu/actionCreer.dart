@@ -9,21 +9,6 @@ import 'package:flutter/rendering.dart';
 import 'package:path_provider/path_provider.dart';
 import '../Map/MainMap.dart';
 
-void main() => runApp(MyApp());
-
-/// This is the main application widget.
-class MyApp extends StatelessWidget {
-  static const String _title = 'Page Action Creer';
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: _title,
-      theme: new ThemeData(primarySwatch: Colors.red, fontFamily: 'BigNoodleTitiling'),
-      home: new GenerateScreen(),
-    );
-  }
-}
 
 
 class GenerateScreen extends StatefulWidget {
@@ -54,7 +39,8 @@ class GenerateScreenState extends State<GenerateScreen> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text('MON GROUPE'),
+        title: Text('MON GROUPE', style: TextStyle(color: Colors.black54,),),
+        backgroundColor: Colors.red,
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.share),
@@ -119,7 +105,7 @@ class GenerateScreenState extends State<GenerateScreen> {
                     child:  TextField(
                       controller: _textController,
                       decoration:  InputDecoration(
-                        hintText: "Enter a custom message",
+                        hintText: "Ici les noms des joueurs",
                         errorText: _inputErrorText,
                       ),
                     ),
@@ -151,18 +137,34 @@ class GenerateScreenState extends State<GenerateScreen> {
               ),
             ),
           ),
-          SizedBox(
-            width: 400,
-            height: 100,
-            child: RaisedButton(
+          ButtonTheme(
+            minWidth: 200.0,
+            child: new ElevatedButton(
+              style: ButtonStyle(
+                  padding: MaterialStateProperty.all(
+                      EdgeInsets.fromLTRB(20, 10, 20, 10)),
+                  backgroundColor: MaterialStateProperty.all<Color>(
+                      Colors.red),
+                  minimumSize: MaterialStateProperty.all(Size(250.0, 20.0)),
+                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                      RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                        side: BorderSide(color: Colors.white),
+                      )
+                  )
+              ),
+              child: new Text(
+                "LET'S GO",
+                style:
+                TextStyle(
+                  fontWeight: FontWeight.w600,
+                  color: Colors.black54,
+                  fontSize: 40,
+                ),
+              ),
               onPressed: () {
                 navigateToMap(context);
               },
-              child: const Text("LET'S GO", style: TextStyle(fontSize: 50,
-                  color: Colors.white,
-                  fontFamily: 'BigNoodleTitling',
-                  fontStyle: FontStyle.italic)),
-              color: Colors.red,
             ),
           ),
         ],
