@@ -1,6 +1,9 @@
+import 'package:annecygo/main.dart';
 import 'package:flutter/material.dart';
 import 'actionCreer.dart';
 import 'actionRejoindre.dart';
+import '../WebSockets/wsCommunication.dart';
+import '../WebSockets/wsNotifs.dart';
 
 class ActionMenuPage extends StatefulWidget {
   @override
@@ -8,7 +11,6 @@ class ActionMenuPage extends StatefulWidget {
 }
 
 class _ActionMenuPageState extends State<ActionMenuPage> {
-
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
@@ -16,7 +18,7 @@ class _ActionMenuPageState extends State<ActionMenuPage> {
         padding: EdgeInsets.fromLTRB(20, 70, 20, 50),
         decoration: BoxDecoration(
           image: DecorationImage(
-            alignment: AlignmentDirectional(0.0,-3.0),
+            alignment: AlignmentDirectional(0.0, -3.0),
             image: AssetImage("images/background.png"),
             fit: BoxFit.fitWidth,
           ),
@@ -48,30 +50,28 @@ class _ActionMenuPageState extends State<ActionMenuPage> {
                     padding: MaterialStateProperty.all(
                         EdgeInsets.fromLTRB(20, 10, 20, 10)),
                     minimumSize: MaterialStateProperty.all(Size(250.0, 20.0)),
-                    backgroundColor: MaterialStateProperty.all<Color>(
-                        Colors.white),
+                    backgroundColor:
+                        MaterialStateProperty.all<Color>(Colors.white),
                     shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                         RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10.0),
-                          side: BorderSide(color: Colors.white),
-
-                        )
-                    )
-                ),
+                      borderRadius: BorderRadius.circular(10.0),
+                      side: BorderSide(color: Colors.white),
+                    ))),
                 child: new Text(
                   'CREER',
-                  style:
-                  TextStyle(
+                  style: TextStyle(
                     fontWeight: FontWeight.w600,
                     color: Colors.black54,
                     fontSize: 40,
                   ),
                 ),
                 onPressed: () {
+                  game.send('createNewGame', game.playerName);
+
                   Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => GenerateScreen())
-                  );
+                      MaterialPageRoute(
+                          builder: (context) => GenerateScreen()));
                 },
               ),
             ),
@@ -83,39 +83,34 @@ class _ActionMenuPageState extends State<ActionMenuPage> {
               right: 10.0,
               bottom: 150.0,
             ),
-          child: ButtonTheme(
-            minWidth: 200.0,
-          child: new ElevatedButton(
-              style: ButtonStyle(
-                  padding: MaterialStateProperty.all(
-                      EdgeInsets.fromLTRB(20, 10, 20, 10)),
-                  backgroundColor: MaterialStateProperty.all<Color>(
-                      Colors.white),
-                  minimumSize: MaterialStateProperty.all(Size(250.0, 20.0)),
-                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                      RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10.0),
-                        side: BorderSide(color: Colors.white),
-                      )
-                  )
-              ),
-              child: new Text(
-                'REJOINDRE',
-                style:
-                TextStyle(
-                  fontWeight: FontWeight.w600,
-                  color: Colors.black54,
-                  fontSize: 40,
+            child: ButtonTheme(
+              minWidth: 200.0,
+              child: new ElevatedButton(
+                style: ButtonStyle(
+                    padding: MaterialStateProperty.all(
+                        EdgeInsets.fromLTRB(20, 10, 20, 10)),
+                    backgroundColor:
+                        MaterialStateProperty.all<Color>(Colors.white),
+                    minimumSize: MaterialStateProperty.all(Size(250.0, 20.0)),
+                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                      side: BorderSide(color: Colors.white),
+                    ))),
+                child: new Text(
+                  'REJOINDRE',
+                  style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    color: Colors.black54,
+                    fontSize: 40,
+                  ),
                 ),
+                onPressed: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => ScanQR()));
+                },
               ),
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => ScanQR())
-                );
-              },
             ),
-          ),
           ),
         ],
       ),

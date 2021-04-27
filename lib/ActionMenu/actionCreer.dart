@@ -8,6 +8,7 @@ import 'dart:io';
 import 'package:flutter/rendering.dart';
 import 'package:path_provider/path_provider.dart';
 import '../Map/MainMap.dart';
+import '../WebSockets/wsCommunication.dart';
 
 class GenerateScreen extends StatefulWidget {
   @override
@@ -20,12 +21,57 @@ class GenerateScreenState extends State<GenerateScreen> {
   static const double _topSectionHeight = 50.0;
 
   GlobalKey globalKey = new GlobalKey();
-  String _dataString = "Hello from this QR";
+  String _dataString = "";
   String _inputErrorText = "";
   final TextEditingController _textController = TextEditingController();
 
+  List<dynamic> playersList = <dynamic>[];
+
   Future navigateToMap(context) async {
     Navigator.push(context, MaterialPageRoute(builder: (context) => MapPage()));
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    ///
+    /// Ask to be notified when messages related to the game
+    /// are sent by the server
+    ///
+    game.addListener(_onGameDataReceived);
+  }
+
+  @override
+  void dispose() {
+    game.removeListener(_onGameDataReceived);
+    super.dispose();
+  }
+
+  _onGameDataReceived(message) {
+    switch (message["action"]) {
+      case "generate_qr":
+        print(message);
+        print(message["data"]["code"]);
+        _dataString = message["data"]["code"];
+        break;
+
+      case "players_list":
+        playersList = message["data"];
+        setState(() {});
+        break;
+
+      /* case 'new_game':
+        Navigator.push(
+            context,
+            new MaterialPageRoute(
+              builder: (BuildContext context) => new GamePage(
+                opponentName: message["data"], // Name of the opponent
+                character: 'O',
+              ),
+            ));
+        break;*/
+    }
   }
 
   @override
@@ -48,6 +94,26 @@ class GenerateScreenState extends State<GenerateScreen> {
         ],
       ),
       body: _contentWidget(),
+    );
+  }
+
+  Widget _playersList() {
+    print(playersList);
+
+    List<Widget> children = playersList.map((playerInfo) {
+      return new ListTile(
+        title: new Text(playerInfo["name"]),
+        trailing: new RaisedButton(
+          onPressed: () {
+            // _onPlayGame(playerInfo["name"], playerInfo["id"]);
+          },
+          child: new Text('Play'),
+        ),
+      );
+    }).toList();
+
+    return new Column(
+      children: children,
     );
   }
 
@@ -101,12 +167,13 @@ class GenerateScreenState extends State<GenerateScreen> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: <Widget>[
                   Expanded(
-                    child: TextField(
-                      controller: _textController,
-                      decoration: InputDecoration(
-                        hintText: "Ici les noms des joueurs",
-                        errorText: _inputErrorText,
-                      ),
+                    child: new Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: <Widget>[
+                        //_buildJoin(),
+                        new Text('List of players:'),
+                        _playersList(),
+                      ],
                     ),
                   ),
                 ],

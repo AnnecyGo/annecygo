@@ -173,6 +173,7 @@ class _LoginPageState extends State<LoginPage> {
 
   void _playPressed() {
     if (_pseudo != null && _pseudo != "") {
+      game.setPlayerName(_pseudo);
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => ActionMenuPage()),

@@ -42,7 +42,7 @@ class GameCommunication {
   ///
   String get playerName => _playerName;
 
-  set playerName(name) {
+  setPlayerName(name) {
     _playerName = name;
   }
 
