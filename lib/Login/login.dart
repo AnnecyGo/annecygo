@@ -1,3 +1,4 @@
+import 'package:annecygo/Games/ChoicesPage.dart';
 import 'package:annecygo/Games/TrueFalsePage.dart';
 import 'package:flutter/material.dart';
 import 'package:annecygo/Map/MainMap.dart';
@@ -132,7 +133,7 @@ class _LoginPageState extends State<LoginPage> {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => TrueFalsePage()),
+                  MaterialPageRoute(builder: (context) => ChoicePage()),
                 );},
             ),
           ),
