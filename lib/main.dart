@@ -4,8 +4,6 @@ import 'Login/login.dart';
 import 'Map/MainMap.dart';
 import 'WebSockets/wsCommunication.dart';
 
-GameCommunication communication = new GameCommunication();
-
 void main() {
   runApp(MyApp());
 }
