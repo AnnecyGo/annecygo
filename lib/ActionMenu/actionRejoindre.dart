@@ -17,7 +17,7 @@ class _ScanQRState extends State<ScanQR> {
         padding: EdgeInsets.fromLTRB(20, 70, 20, 50),
         decoration: BoxDecoration(
           image: DecorationImage(
-            alignment: Alignment(0, 10),
+            alignment: AlignmentDirectional(0.0,-3.0),
             image: AssetImage("images/background.png"),
             fit: BoxFit.fitWidth,
           ),
