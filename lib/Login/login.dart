@@ -8,9 +8,6 @@ class LoginPage extends StatefulWidget {
   _LoginPageState createState() => _LoginPageState();
 }
 
-// Used for controlling whether the user is loging or creating an account
-enum FormType { login, register }
-
 class _LoginPageState extends State<LoginPage> {
 
   @override
@@ -20,7 +17,8 @@ class _LoginPageState extends State<LoginPage> {
         padding: EdgeInsets.fromLTRB(20,70,20,50),
         decoration: BoxDecoration(
           image: DecorationImage(
-            alignment: Alignment(0, 10),
+            alignment: AlignmentDirectional(0.0,-3.0),
+
             image: AssetImage("images/background.png"),
             fit: BoxFit.fitWidth,
           ),
@@ -41,64 +39,30 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  final TextEditingController _emailFilter = new TextEditingController();
-  final TextEditingController _passwordFilter = new TextEditingController();
-  String _email = "";
-  String _password = "";
-  FormType _form = FormType
-      .login; // our default setting is to login, and we should switch to creating an account when the user chooses to
+  final TextEditingController _pseudoFilter = new TextEditingController();
+  String _pseudo = "";
+
+
+  void _pseudoListen() {
+    if (_pseudoFilter.text.isEmpty) {
+      _pseudo = "";
+    } else {
+      _pseudo = _pseudoFilter.text;
+    }
+  }
 
   _LoginPageState() {
-    _emailFilter.addListener(_emailListen);
-    _passwordFilter.addListener(_passwordListen);
-  }
-
-  void _emailListen() {
-    if (_emailFilter.text.isEmpty) {
-      _email = "";
-    } else {
-      _email = _emailFilter.text;
-    }
-  }
-
-  void _passwordListen() {
-    if (_passwordFilter.text.isEmpty) {
-      _password = "";
-    } else {
-      _password = _passwordFilter.text;
-    }
-  }
-
-  // Swap in between our two forms, registering and logging in
-  void _formChange() async {
-    setState(() {
-      if (_form == FormType.register) {
-        _form = FormType.login;
-      } else {
-        _form = FormType.register;
-      }
-    });
+    _pseudoFilter.addListener(_pseudoListen);
   }
 
 
   Widget _buildTextFields() {
     return new Container(
-      child: new Column(
-        children: <Widget>[
-          new Container(
-            child: new TextField(
-              controller: _emailFilter,
-              decoration: new InputDecoration(labelText: 'Email'),
-            ),
-          ),
-          new Container(
-            child: new TextField(
-              controller: _passwordFilter,
-              decoration: new InputDecoration(labelText: 'Password'),
-              obscureText: true,
-            ),
-          )
-        ],
+      child:  new Container(
+        child: new TextField(
+          controller: _pseudoFilter,
+          decoration: new InputDecoration(labelText: 'PSEUDO'),
+        ),
       ),
     );
   }
@@ -129,7 +93,7 @@ class _LoginPageState extends State<LoginPage> {
                     )
                 ),
                 child: new Text(
-                  'LOGIN',
+                  'JOUER',
                   style:
                   TextStyle(
                     fontWeight: FontWeight.w600,
@@ -137,7 +101,7 @@ class _LoginPageState extends State<LoginPage> {
                     fontSize: 40,
                   ),
                 ),
-                onPressed: _loginPressed,
+                onPressed: _playPressed,
               ),
             ),),
 
@@ -157,7 +121,7 @@ class _LoginPageState extends State<LoginPage> {
                   )
               ),
               child: new Text(
-                'REGISTER',
+                'TEST MINI-JEU',
                 style:
                 TextStyle(
                   fontWeight: FontWeight.w600,
@@ -178,17 +142,46 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  // These functions can self contain any user auth logic required, they all have access to _email and _password
-
-  void _loginPressed() {
-    print('The user wants to login with $_email and $_password');
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => ActionMenuPage()),
+  Future<void> alertResult(String result) async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Pseudo incorrect'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text(result),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text('Ok'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 
-  void _RegisterPressed() {
-    print('The user wants to login with $_email and $_password');
+
+  // These functions can self contain any user auth logic required, they all have access to _email and _password
+
+  void _playPressed() {
+    if( _pseudo != null && _pseudo != "" ){
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => ActionMenuPage()),
+      );
+    } else {
+      alertResult("Veuillez renseigner un pseudo valide");
+    }
+
+
   }
 }
