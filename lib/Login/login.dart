@@ -1,8 +1,9 @@
-import 'package:annecygo/Games/ChoicesPage.dart';
 import 'package:annecygo/Games/TrueFalsePage.dart';
 import 'package:flutter/material.dart';
 import 'package:annecygo/Map/MainMap.dart';
 import '../ActionMenu/actionMenu.dart';
+import '../WebSockets/wsCommunication.dart';
+import '../main.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -15,11 +16,10 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return new Scaffold(
       body: new Container(
-        padding: EdgeInsets.fromLTRB(20,70,20,50),
+        padding: EdgeInsets.fromLTRB(20, 70, 20, 50),
         decoration: BoxDecoration(
           image: DecorationImage(
-            alignment: AlignmentDirectional(0.0,-3.0),
-
+            alignment: AlignmentDirectional(0.0, -3.0),
             image: AssetImage("images/background.png"),
             fit: BoxFit.fitWidth,
           ),
@@ -59,7 +59,7 @@ class _LoginPageState extends State<LoginPage> {
 
   Widget _buildTextFields() {
     return new Container(
-      child:  new Container(
+      child: new Container(
         child: new TextField(
           controller: _pseudoFilter,
           decoration: new InputDecoration(labelText: 'PSEUDO'),
@@ -77,26 +77,24 @@ class _LoginPageState extends State<LoginPage> {
 
           Container(
             margin: const EdgeInsets.only(bottom: 20.0),
-            child:ButtonTheme(
+            child: ButtonTheme(
               minWidth: 200.0,
 
               child: new ElevatedButton(
                 style: ButtonStyle(
-                    padding: MaterialStateProperty.all(EdgeInsets.fromLTRB(20,10,20,10)),
-                    minimumSize: MaterialStateProperty.all(Size(250.0,20.0)),
-                    backgroundColor: MaterialStateProperty.all<Color>(Colors.white) ,
+                    padding: MaterialStateProperty.all(
+                        EdgeInsets.fromLTRB(20, 10, 20, 10)),
+                    minimumSize: MaterialStateProperty.all(Size(250.0, 20.0)),
+                    backgroundColor:
+                        MaterialStateProperty.all<Color>(Colors.white),
                     shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                         RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10.0),
-                          side: BorderSide(color: Colors.white),
-
-                        )
-                    )
-                ),
+                      borderRadius: BorderRadius.circular(10.0),
+                      side: BorderSide(color: Colors.white),
+                    ))),
                 child: new Text(
                   'JOUER',
-                  style:
-                  TextStyle(
+                  style: TextStyle(
                     fontWeight: FontWeight.w600,
                     color: Colors.black54,
                     fontSize: 40,
@@ -104,27 +102,26 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 onPressed: _playPressed,
               ),
-            ),),
-
+            ),
+          ),
           ButtonTheme(
             minWidth: 200.0,
 
             child: new ElevatedButton(
               style: ButtonStyle(
-                  padding: MaterialStateProperty.all(EdgeInsets.fromLTRB(20,10,20,10)),
-                  backgroundColor: MaterialStateProperty.all<Color>(Colors.white) ,
-                  minimumSize: MaterialStateProperty.all(Size(250.0,20.0)),
+                  padding: MaterialStateProperty.all(
+                      EdgeInsets.fromLTRB(20, 10, 20, 10)),
+                  backgroundColor:
+                      MaterialStateProperty.all<Color>(Colors.white),
+                  minimumSize: MaterialStateProperty.all(Size(250.0, 20.0)),
                   shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                       RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10.0),
-                        side: BorderSide(color: Colors.white),
-                      )
-                  )
-              ),
+                    borderRadius: BorderRadius.circular(10.0),
+                    side: BorderSide(color: Colors.white),
+                  ))),
               child: new Text(
                 'TEST MINI-JEU',
-                style:
-                TextStyle(
+                style: TextStyle(
                   fontWeight: FontWeight.w600,
                   color: Colors.black54,
                   fontSize: 40,
@@ -133,8 +130,9 @@ class _LoginPageState extends State<LoginPage> {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => ChoicePage()),
-                );},
+                  MaterialPageRoute(builder: (context) => TrueFalsePage()),
+                );
+              },
             ),
           ),
 
@@ -174,7 +172,7 @@ class _LoginPageState extends State<LoginPage> {
   // These functions can self contain any user auth logic required, they all have access to _email and _password
 
   void _playPressed() {
-    if( _pseudo != null && _pseudo != "" ){
+    if (_pseudo != null && _pseudo != "") {
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => ActionMenuPage()),
