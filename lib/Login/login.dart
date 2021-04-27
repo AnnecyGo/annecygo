@@ -1,27 +1,46 @@
+import 'package:annecygo/Games/TrueFalsePage.dart';
 import 'package:flutter/material.dart';
-
-void main() => runApp(new MyApp());
-
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return new MaterialApp(
-      title: 'Login Page',
-      theme: new ThemeData(primarySwatch: Colors.red),
-      home: new LoginPage(),
-    );
-  }
-}
+import 'package:annecygo/Map/MainMap.dart';
+import '../ActionMenu/actionMenu.dart';
+import '../WebSockets/wsCommunication.dart';
+import '../main.dart';
 
 class LoginPage extends StatefulWidget {
   @override
-  State<StatefulWidget> createState() => new _LoginPageState();
+  _LoginPageState createState() => _LoginPageState();
 }
 
-// Used for controlling whether the user is loggin or creating an account
+// Used for controlling whether the user is loging or creating an account
 enum FormType { login, register }
 
 class _LoginPageState extends State<LoginPage> {
+  @override
+  Widget build(BuildContext context) {
+    return new Scaffold(
+      body: new Container(
+        padding: EdgeInsets.fromLTRB(20, 70, 20, 50),
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            alignment: Alignment(0, 10),
+            image: AssetImage("images/background.png"),
+            fit: BoxFit.fitWidth,
+          ),
+        ),
+        child: new Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Image.asset(
+              'images/annecyGoTitle.png',
+              fit: BoxFit.fitWidth,
+            ),
+            _buildTextFields(),
+            _buildButtons(),
+          ],
+        ),
+      ),
+    );
+  }
+
   final TextEditingController _emailFilter = new TextEditingController();
   final TextEditingController _passwordFilter = new TextEditingController();
   String _email = "";
@@ -61,43 +80,6 @@ class _LoginPageState extends State<LoginPage> {
     });
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return new Scaffold(
-      body: new Container(
-        padding: EdgeInsets.all(50.0),
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            alignment: Alignment(0, -5),
-            image: AssetImage("images/background.png"),
-            fit: BoxFit.fitWidth,
-          ),
-        ),
-        alignment: Alignment.center,
-        child: new Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: <Widget>[
-            Align(
-              alignment: Alignment.center,
-              child: Image.asset(
-                'images/annecyGoTitle.png',
-                fit: BoxFit.fitWidth,
-              ),
-            ),
-            Align(
-              alignment: Alignment.center,
-              child: _buildTextFields(),
-            ),
-            Align(
-              alignment: Alignment.center,
-              child: _buildButtons(),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
   Widget _buildTextFields() {
     return new Container(
       child: new Column(
@@ -122,50 +104,66 @@ class _LoginPageState extends State<LoginPage> {
 
   Widget _buildButtons() {
     return new Container(
-
       child: new Column(
-
         children: <Widget>[
-
           Container(
             margin: const EdgeInsets.only(bottom: 20.0),
-            child:ButtonTheme(
-            minWidth: 200.0,
-
-            child: new RaisedButton(
-
-              color: Colors.white,
-              child: new Text(
-                'Login',
-                style:
-                TextStyle(
-                  fontWeight: FontWeight.w400,
-                  color: Colors.black45,
-                  fontSize: 40,
+            child: ButtonTheme(
+              minWidth: 200.0,
+              child: new ElevatedButton(
+                style: ButtonStyle(
+                    padding: MaterialStateProperty.all(
+                        EdgeInsets.fromLTRB(20, 10, 20, 10)),
+                    minimumSize: MaterialStateProperty.all(Size(250.0, 20.0)),
+                    backgroundColor:
+                        MaterialStateProperty.all<Color>(Colors.white),
+                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                      side: BorderSide(color: Colors.white),
+                    ))),
+                child: new Text(
+                  'LOGIN',
+                  style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    color: Colors.black54,
+                    fontSize: 40,
+                  ),
                 ),
+                onPressed: _loginPressed,
               ),
-              onPressed: _loginPressed,
-            ),
-          ),),
-
-          ButtonTheme(
-            minWidth: 200.0,
-
-            child: new RaisedButton(
-              color: Colors.white,
-              child: new Text(
-                'Register',
-                style:
-                TextStyle(
-                  fontWeight: FontWeight.w400,
-                  color: Colors.black45,
-                  fontSize: 40,
-                ),
-              ),
-              onPressed: _loginPressed,
             ),
           ),
-
+          ButtonTheme(
+            minWidth: 200.0,
+            child: new ElevatedButton(
+              style: ButtonStyle(
+                  padding: MaterialStateProperty.all(
+                      EdgeInsets.fromLTRB(20, 10, 20, 10)),
+                  backgroundColor:
+                      MaterialStateProperty.all<Color>(Colors.white),
+                  minimumSize: MaterialStateProperty.all(Size(250.0, 20.0)),
+                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                      RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                    side: BorderSide(color: Colors.white),
+                  ))),
+              child: new Text(
+                'REGISTER',
+                style: TextStyle(
+                  fontWeight: FontWeight.w600,
+                  color: Colors.black54,
+                  fontSize: 40,
+                ),
+              ),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => TrueFalsePage()),
+                );
+              },
+            ),
+          ),
         ],
       ),
     );
@@ -175,6 +173,13 @@ class _LoginPageState extends State<LoginPage> {
 
   void _loginPressed() {
     print('The user wants to login with $_email and $_password');
+    if (!_emailFilter.text.isEmpty) {
+      communication.playerName = _emailFilter.text;
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => ActionMenuPage()),
+      );
+    }
   }
 
   void _RegisterPressed() {

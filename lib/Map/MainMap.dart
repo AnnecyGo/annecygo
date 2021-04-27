@@ -7,7 +7,13 @@ import 'package:latlong/latlong.dart';
 import 'package:http/http.dart' as http;
 import 'package:map_controller/map_controller.dart';
 
-class _StatefulMarkersPageState extends State<StatefulMarkersPage> {
+class MapPage extends StatefulWidget {
+  @override
+  _MapPageState createState() => _MapPageState();
+}
+
+
+class _MapPageState extends State<MapPage> {
   MapController mapController;
   StatefulMapController statefulMapController;
   StreamSubscription<StatefulMapControllerStateChange> sub;
@@ -70,9 +76,9 @@ class _StatefulMarkersPageState extends State<StatefulMarkersPage> {
     mapController = MapController();
     statefulMapController = StatefulMapController(mapController: mapController);
     statefulMapController.onReady.then((_) => setState(() {
-          ready = true;
-          addMarker(context);
-        }));
+      ready = true;
+      addMarker(context);
+    }));
     sub = statefulMapController.changeFeed.listen((change) => setState(() {}));
     super.initState();
   }
@@ -81,27 +87,33 @@ class _StatefulMarkersPageState extends State<StatefulMarkersPage> {
   Widget build(BuildContext context) {
     return MaterialApp(
         home: Scaffold(
-      body: SafeArea(
-          child: FlutterMap(
-        mapController: mapController,
-        options: MapOptions(
-          center: LatLng(45.899247, 6.129384),
-          zoom: 13.0,
-        ),
-        layers: [
-          statefulMapController.tileLayer,
-          MarkerLayerOptions(
-            markers: statefulMapController.markers,
+          body: SafeArea(
+              child: FlutterMap(
+                mapController: mapController,
+                options: MapOptions(
+
+                  center: LatLng(45.899247, 6.129384),
+                  zoom: 13.0,
+                ),
+                layers: [
+
+                  statefulMapController.tileLayer,
+                  MarkerLayerOptions(
+                    markers: statefulMapController.markers,
+                  ),
+                ],
+
+              )
           ),
-        ],
-      )),
-      floatingActionButton: loaded
-          ? FloatingActionButton(
-              onPressed: () => addMarker(context),
-              child: Icon(Icons.refresh),
-            )
-          : CircularProgressIndicator(),
-    ));
+          floatingActionButton: loaded
+              ? FloatingActionButton(
+            onPressed: () => addMarker(context),
+            child: Icon(Icons.refresh),
+          )
+              : CircularProgressIndicator(),
+
+        )
+    );
   }
 
   @override
@@ -109,9 +121,4 @@ class _StatefulMarkersPageState extends State<StatefulMarkersPage> {
     sub.cancel();
     super.dispose();
   }
-}
-
-class StatefulMarkersPage extends StatefulWidget {
-  @override
-  _StatefulMarkersPageState createState() => _StatefulMarkersPageState();
 }
