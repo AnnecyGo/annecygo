@@ -104,38 +104,6 @@ class _LoginPageState extends State<LoginPage> {
               ),
             ),
           ),
-          ButtonTheme(
-            minWidth: 200.0,
-
-            child: new ElevatedButton(
-              style: ButtonStyle(
-                  padding: MaterialStateProperty.all(
-                      EdgeInsets.fromLTRB(20, 10, 20, 10)),
-                  backgroundColor:
-                      MaterialStateProperty.all<Color>(Colors.white),
-                  minimumSize: MaterialStateProperty.all(Size(250.0, 20.0)),
-                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                      RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10.0),
-                    side: BorderSide(color: Colors.white),
-                  ))),
-              child: new Text(
-                'TEST MINI-JEU',
-                style: TextStyle(
-                  fontWeight: FontWeight.w600,
-                  color: Colors.black54,
-                  fontSize: 40,
-                ),
-              ),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => TrueFalsePage()),
-                );
-              },
-            ),
-          ),
-
         ],
       ),
     );
