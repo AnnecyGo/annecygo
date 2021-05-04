@@ -1,7 +1,7 @@
 import 'package:annecygo/main.dart';
+import 'package:barcode_scan_fix/barcode_scan.dart';
 import 'package:flutter/material.dart';
 import 'actionCreer.dart';
-import 'actionRejoindre.dart';
 import '../WebSockets/wsCommunication.dart';
 import '../WebSockets/wsNotifs.dart';
 
@@ -105,9 +105,9 @@ class _ActionMenuPageState extends State<ActionMenuPage> {
                     fontSize: 40,
                   ),
                 ),
-                onPressed: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => ScanQR()));
+                onPressed: () async {
+                  String codeSanner = await BarcodeScanner
+                      .scan();
                 },
               ),
             ),
