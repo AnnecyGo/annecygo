@@ -69,7 +69,7 @@ class _MapPageState extends State<MapPage> {
                   marker: Marker(
                       point: LatLng(position.latitude, position.longitude),
                       builder: (BuildContext context) {
-                        return const Icon(Icons.location_on);
+                        return const Icon(Icons.directions_walk);
                       }),
                 );
               });
