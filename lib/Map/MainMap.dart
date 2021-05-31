@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:annecygo/Games/TrueFalsePage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong/latlong.dart';
@@ -48,14 +49,14 @@ class _MapPageState extends State<MapPage> {
             var id = mon["recordid"];
 
             markersArray.add(id);
-
             statefulMapController.addMarker(
-                name: id,
-                marker: Marker(
-                    point: LatLng(lat, lng),
-                    builder: (BuildContext context) {
-                      return const Icon(Icons.location_on);
-                    }));
+              name: id,
+              marker: Marker(
+                  point: LatLng(lat, lng),
+                  builder: (BuildContext context) {
+                    return const Icon(Icons.location_on);
+                  }),
+            );
           }
 
           setState(() {
@@ -90,6 +91,12 @@ class _MapPageState extends State<MapPage> {
           child: FlutterMap(
         mapController: mapController,
         options: MapOptions(
+          onTap: (latlang) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => TrueFalsePage()),
+            );
+          },
           center: LatLng(45.899247, 6.129384),
           zoom: 13.0,
         ),
