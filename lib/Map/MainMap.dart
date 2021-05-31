@@ -9,7 +9,7 @@ import 'package:http/http.dart' as http;
 import 'package:map_controller/map_controller.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:giffy_dialog/giffy_dialog.dart';
-
+import '../WebSockets/wsCommunication.dart';
 
 class MapPage extends StatefulWidget {
   @override
@@ -62,25 +62,24 @@ class _MapPageState extends State<MapPage> {
             );
           }
 
-          StreamSubscription<Position> positionStream = Geolocator.getPositionStream().listen(
-                  (Position position)  { // ignore: cancel_subscriptions
-                //print(position == null ? 'lat + long ' : position.latitude.toString() + ', ' + position.longitude.toString());
-                statefulMapController.addMarker(
-                  name: "player",
-                  marker: Marker(
-                      point: LatLng(position.latitude, position.longitude),
-                      builder: (BuildContext context) {
-                        return const Icon(Icons.directions_walk);
-                      }),
-                );
-              });
-
+          StreamSubscription<Position> positionStream =
+              Geolocator.getPositionStream().listen((Position position) {
+            // ignore: cancel_subscriptions
+            //print(position == null ? 'lat + long ' : position.latitude.toString() + ', ' + position.longitude.toString());
+            statefulMapController.addMarker(
+              name: "player",
+              marker: Marker(
+                  point: LatLng(position.latitude, position.longitude),
+                  builder: (BuildContext context) {
+                    return const Icon(Icons.directions_walk);
+                  }),
+            );
+          });
 
           setState(() {
             loaded = true;
           });
         });
-
       });
     } on Exception catch (exception) {
       print(exception);
@@ -116,6 +115,7 @@ class _MapPageState extends State<MapPage> {
 
   @override
   void initState() {
+    game.addListener(_onGameDataReceived);
     mapController = MapController();
     statefulMapController = StatefulMapController(mapController: mapController);
     statefulMapController.onReady.then((_) => setState(() {
@@ -124,6 +124,42 @@ class _MapPageState extends State<MapPage> {
         }));
     sub = statefulMapController.changeFeed.listen((change) => setState(() {}));
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    sub.cancel();
+    game.removeListener(_onGameDataReceived);
+    super.dispose();
+  }
+
+  List<dynamic> playersList = <dynamic>[];
+
+  _onGameDataReceived(message) {
+    switch (message["action"]) {
+      case "players_list":
+        playersList = message["data"];
+        showDialog(context: context, builder: (_) => _playersList());
+        setState(() {});
+        break;
+    }
+  }
+
+  Widget _playersList() {
+    print(playersList);
+
+    List<Widget> children = playersList.map((playerInfo) {
+      return new Container(
+          margin: const EdgeInsets.only(top: 20.0),
+          child: Text(
+            playerInfo["name"],
+            style: new TextStyle(fontSize: 25),
+          ));
+    }).toList();
+
+    return new Column(
+      children: children,
+    );
   }
 
   @override
@@ -151,38 +187,13 @@ class _MapPageState extends State<MapPage> {
         ],
       )),
       floatingActionButton: loaded
-          ? FloatingActionButton(
-          onPressed: () {
-            showDialog(
-              context: context,builder: (_) => NetworkGiffyDialog(
-              image: Image.network("https://i.ibb.co/QkL7H4R/participants.png",
-              ), title: Text('List des participants ......',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                    fontSize: 22.0,
-                    fontWeight: FontWeight.w600)),
-              description:Text('',
-                textAlign: TextAlign.center,
-              ),
-              entryAnimation: EntryAnimation.LEFT,
-              onlyCancelButton: true,
-            ) );
-          }
+          ? FloatingActionButton(onPressed: () {
+              game.send("getPlayerList", game.roomCode);
+            }
               //onPressed: () => addMarker(context),
               //child: Icon(Icons.add),
-            )
+              )
           : CircularProgressIndicator(),
-
     ));
-  }
-
-
-
-
-
-  @override
-  void dispose() {
-    sub.cancel();
-    super.dispose();
   }
 }
