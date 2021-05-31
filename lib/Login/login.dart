@@ -5,6 +5,9 @@ import 'package:annecygo/Map/MainMap.dart';
 class LoginPage extends StatefulWidget {
   @override
   _LoginPageState createState() => _LoginPageState();
+
+
+
 }
 
 // Used for controlling whether the user is loging or creating an account
@@ -14,6 +17,9 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+
+    Future.delayed(Duration.zero, () => alertStartUp());
+
     return new Scaffold(
       body: new Container(
         padding: EdgeInsets.fromLTRB(20,70,20,50),
@@ -38,6 +44,7 @@ class _LoginPageState extends State<LoginPage> {
         ),
       ),
     );
+
   }
 
   final TextEditingController _emailFilter = new TextEditingController();
@@ -81,6 +88,7 @@ class _LoginPageState extends State<LoginPage> {
 
 
   Widget _buildTextFields() {
+
     return new Container(
       child: new Column(
         children: <Widget>[
@@ -187,7 +195,32 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  void _RegisterPressed() {
-    print('The user wants to login with $_email and $_password');
+  Future<void> alertStartUp() async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Bienvenue dans Annecy Go'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text("Pour commencer à utiliser l'application. Entrez un nom d'Utilisateur et commencez à accumuler des récompenses en explorant les monuments d'Annecy ! "),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text('Ok'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
+
+
 }
