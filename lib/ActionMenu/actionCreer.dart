@@ -18,7 +18,7 @@ class GenerateScreen extends StatefulWidget {
 class GenerateScreenState extends State<GenerateScreen> {
   static const double _topSectionTopPadding = 50.0;
   static const double _topSectionBottomPadding = 20.0;
-  static const double _topSectionHeight = 50.0;
+  static const double _topSectionHeight = 20.0;
 
   GlobalKey globalKey = new GlobalKey();
   String _dataString = "";
@@ -56,13 +56,13 @@ class GenerateScreenState extends State<GenerateScreen> {
 
       case "players_list":
         playersList = message["data"];
-        print("############");
-        print("############");
         print("PLAYER LIST");
         print(playersList);
-        print("############");
-        print("############");
         setState(() {});
+        break;
+
+      case "startGame":
+        navigateToMap(context);
         break;
 
       /* case 'new_game':
@@ -106,15 +106,12 @@ class GenerateScreenState extends State<GenerateScreen> {
     print(playersList);
 
     List<Widget> children = playersList.map((playerInfo) {
-      return new ListTile(
-        title: new Text(playerInfo["name"]),
-        trailing: new RaisedButton(
-          onPressed: () {
-            // _onPlayGame(playerInfo["name"], playerInfo["id"]);
-          },
-          child: new Text('Play'),
-        ),
-      );
+      return new Container(
+          margin: const EdgeInsets.only(top: 20.0),
+          child: Text(
+            playerInfo["name"],
+            style: new TextStyle(fontSize: 25),
+          ));
     }).toList();
 
     return new Column(
@@ -158,84 +155,87 @@ class GenerateScreenState extends State<GenerateScreen> {
       color: const Color(0xFFFFFFFF),
       child: !playersList.isEmpty
           ? Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.only(
-                    top: _topSectionTopPadding,
-                    left: 20.0,
-                    right: 10.0,
-                    bottom: _topSectionBottomPadding,
-                  ),
-                  child: Container(
-                    height: _topSectionHeight,
-                    child: Row(
-                      mainAxisSize: MainAxisSize.max,
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: <Widget>[
-                        Expanded(
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Container(
+                        padding: EdgeInsets.only(
+                            bottom: 20, top: 20, right: 20, left: 20),
+                        child: Expanded(
                           child: new Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
                             children: <Widget>[
                               //_buildJoin(),
-                              new Text('List of players:'),
+                              new Text(
+                                'Liste des joueurs:',
+                                style: new TextStyle(fontSize: 40),
+                              ),
                               _playersList(),
                             ],
                           ),
-                        ),
+                        )),
+                  ],
+                ),
+                Column(
+                  children: <Widget>[
+                    Container(
+                        margin: const EdgeInsets.only(left: 10.0, right: 20.0),
+                        child: Divider(
+                          color: Colors.black,
+                          height: 36,
+                        )),
+                    Text("SCAN LE QRCODE POUR REJOINDRE"),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        RepaintBoundary(
+                          key: globalKey,
+                          child: QrImage(
+                            data: _dataString,
+                            size: 200,
+                          ),
+                        )
                       ],
                     ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(
-                    top: 330,
-                    left: 20.0,
-                    right: 10.0,
-                  ),
-                  child: Expanded(
-                    child: Text("SCAN LE QRCODE POUR REJOINDRE"),
-                  ),
-                ),
-                Expanded(
-                  child: Center(
-                    child: RepaintBoundary(
-                      key: globalKey,
-                      child: QrImage(
-                        data: _dataString,
-                        size: 200,
-                      ),
+                    ButtonTheme(
+                      minWidth: 200.0,
+                      child: game.isAdmin
+                          ? new Container(
+                              padding: EdgeInsets.only(
+                                  bottom: 20, top: 20, right: 20, left: 20),
+                              child: ElevatedButton(
+                                style: ButtonStyle(
+                                    padding: MaterialStateProperty.all(
+                                        EdgeInsets.fromLTRB(20, 10, 20, 10)),
+                                    backgroundColor:
+                                        MaterialStateProperty.all<Color>(
+                                            Colors.red),
+                                    minimumSize: MaterialStateProperty.all(
+                                        Size(250.0, 20.0)),
+                                    shape: MaterialStateProperty.all<
+                                            RoundedRectangleBorder>(
+                                        RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10.0),
+                                      side: BorderSide(color: Colors.white),
+                                    ))),
+                                child: new Text(
+                                  "LET'S GO",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w600,
+                                    color: Colors.black54,
+                                    fontSize: 40,
+                                  ),
+                                ),
+                                onPressed: () {
+                                  game.send('startGame', game.roomCode);
+                                },
+                              ))
+                          : Text("En attende du chef de partie..."),
                     ),
-                  ),
-                ),
-                ButtonTheme(
-                  minWidth: 200.0,
-                  child: new ElevatedButton(
-                    style: ButtonStyle(
-                        padding: MaterialStateProperty.all(
-                            EdgeInsets.fromLTRB(20, 10, 20, 10)),
-                        backgroundColor:
-                            MaterialStateProperty.all<Color>(Colors.red),
-                        minimumSize:
-                            MaterialStateProperty.all(Size(250.0, 20.0)),
-                        shape:
-                            MaterialStateProperty.all<RoundedRectangleBorder>(
-                                RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10.0),
-                          side: BorderSide(color: Colors.white),
-                        ))),
-                    child: new Text(
-                      "LET'S GO",
-                      style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                        color: Colors.black54,
-                        fontSize: 40,
-                      ),
-                    ),
-                    onPressed: () {
-                      navigateToMap(context);
-                    },
-                  ),
-                ),
+                  ],
+                )
               ],
             )
           : Row(

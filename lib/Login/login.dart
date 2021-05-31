@@ -11,7 +11,6 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-
   @override
   Widget build(BuildContext context) {
     Future.delayed(Duration.zero, () => alertStartUp());
@@ -34,7 +33,6 @@ class _LoginPageState extends State<LoginPage> {
             ),
             _buildTextFields(),
             _buildButtons(),
-
           ],
         ),
       ),
@@ -43,7 +41,6 @@ class _LoginPageState extends State<LoginPage> {
 
   final TextEditingController _pseudoFilter = new TextEditingController();
   String _pseudo = "";
-
 
   void _pseudoListen() {
     if (_pseudoFilter.text.isEmpty) {
@@ -57,13 +54,21 @@ class _LoginPageState extends State<LoginPage> {
     _pseudoFilter.addListener(_pseudoListen);
   }
 
-
   Widget _buildTextFields() {
     return new Container(
       child: new Container(
         child: new TextField(
           controller: _pseudoFilter,
-          decoration: new InputDecoration(labelText: 'PSEUDO'),
+          decoration: new InputDecoration(
+              border: new OutlineInputBorder(
+                borderRadius: const BorderRadius.all(
+                  const Radius.circular(100.0),
+                ),
+              ),
+              filled: true,
+              hintStyle: new TextStyle(color: Colors.grey[800]),
+              labelText: "Pseudo",
+              fillColor: Colors.white54),
         ),
       ),
     );
@@ -71,16 +76,12 @@ class _LoginPageState extends State<LoginPage> {
 
   Widget _buildButtons() {
     return new Container(
-
       child: new Column(
-
         children: <Widget>[
-
           Container(
             margin: const EdgeInsets.only(bottom: 20.0),
             child: ButtonTheme(
               minWidth: 200.0,
-
               child: new ElevatedButton(
                 style: ButtonStyle(
                     padding: MaterialStateProperty.all(
@@ -120,7 +121,8 @@ class _LoginPageState extends State<LoginPage> {
           content: SingleChildScrollView(
             child: ListBody(
               children: <Widget>[
-                Text("Pour commencer à utiliser l'application. Entrez un nom d'Utilisateur et commencez à accumuler des récompenses en explorant les monuments d'Annecy ! "),
+                Text(
+                    "Pour commencer à utiliser l'application. Entrez un nom d'Utilisateur et commencez à accumuler des récompenses en explorant les monuments d'Annecy ! "),
               ],
             ),
           ),
@@ -164,7 +166,6 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-
   // These functions can self contain any user auth logic required, they all have access to _email and _password
 
   void _playPressed() {
@@ -177,7 +178,5 @@ class _LoginPageState extends State<LoginPage> {
     } else {
       alertResult("Veuillez renseigner un pseudo valide");
     }
-
-
   }
 }

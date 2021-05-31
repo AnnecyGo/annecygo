@@ -5,8 +5,8 @@ import 'package:web_socket_channel/status.dart' as status;
 
 WebSocketsNotifications sockets = new WebSocketsNotifications();
 
-const String _SERVER_ADDRESS =
-    'ws://[2a01:cb15:12d:aa00:b045:5f7f:8c63:6016]:1330';
+const String _SERVER_ADDRESS = 'ws://86.200.111.40:1645';
+/*const String _SERVER_ADDRESS = 'ws://annecygo-api-monuments.herokuapp.com:1330';*/
 
 class WebSocketsNotifications {
   static final WebSocketsNotifications _sockets =

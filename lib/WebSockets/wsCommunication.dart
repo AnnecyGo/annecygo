@@ -14,6 +14,7 @@ class GameCommunication {
   String _playerName = "";
   String _playerID = "";
   String _roomCode = "";
+  bool _isAdmin = false;
 
   factory GameCommunication() {
     return _game;
@@ -26,6 +27,7 @@ class GameCommunication {
 
   String get playerName => _playerName;
   String get roomCode => _roomCode;
+  bool get isAdmin => _isAdmin;
 
   setPlayerName(name) {
     _playerName = name;
@@ -43,6 +45,13 @@ class GameCommunication {
       ///
       case 'connect':
         _playerID = message["data"];
+        break;
+
+      case 'savePlayer':
+        print("SAVE PLAYER");
+        _isAdmin = message["data"]["admin"];
+        print(isAdmin);
+        print(message["data"]);
         break;
 
       case 'joinRoom':
