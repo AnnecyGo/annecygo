@@ -38,8 +38,10 @@ dependencies:
   cupertino_icons: ^1.0.0
 
   http: ^0.12.2
+
   geolocator: ^7.0.3
   giffy_dialog: ^1.8.0
+
 
   # location: ^3.2.4
 
@@ -67,6 +69,7 @@ flutter:
    - images/annecyGoTitle.png
    - images/background.png
    - images/marker.png
+   - images/Reward/
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

@@ -1,5 +1,5 @@
 import 'dart:math';
-
+import '../Reward/rewardPage.dart';
 import 'package:flutter/material.dart';
 
 class TrueFalsePage extends StatefulWidget {
@@ -197,6 +197,10 @@ class _TrueFalsePageState extends State<TrueFalsePage> {
   void answerValidation(bool userAnswer){
     if(currentQuestion.answer == userAnswer){
       alertResult("Bravo c'est une bonne réponse",currentQuestion.comment);
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => RewardPage()));
     } else {
       alertResult("C'est perdu dommage",currentQuestion.comment);
     }
