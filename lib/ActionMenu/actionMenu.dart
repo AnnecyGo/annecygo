@@ -12,6 +12,37 @@ class ActionMenuPage extends StatefulWidget {
 
 class _ActionMenuPageState extends State<ActionMenuPage> {
   @override
+  void initState() {
+    if (game.roomCode != "") {
+      print("room: " + game.roomCode);
+    } else {
+      print("########## no room");
+    }
+    super.initState();
+    game.addListener(_onGameDataReceived);
+  }
+
+  @override
+  void dispose() {
+    game.removeListener(_onGameDataReceived);
+    super.dispose();
+  }
+
+  _onGameDataReceived(message) {
+    switch (message["action"]) {
+      case "roomFound":
+        // playersList = message["data"];
+        Navigator.push(context,
+                MaterialPageRoute(builder: (context) => GenerateScreen()))
+            .then((value) {
+          print("here after push");
+        });
+        setState(() {});
+        break;
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return new Scaffold(
       body: new Container(
@@ -66,12 +97,17 @@ class _ActionMenuPageState extends State<ActionMenuPage> {
                   ),
                 ),
                 onPressed: () {
+                  print("create game");
                   game.send('createNewGame', game.playerName);
 
                   Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => GenerateScreen()));
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => GenerateScreen()))
+                      .then((value) {
+                    print("here after push");
+                  });
+                  ;
                 },
               ),
             ),
@@ -106,8 +142,11 @@ class _ActionMenuPageState extends State<ActionMenuPage> {
                   ),
                 ),
                 onPressed: () async {
-                  String codeSanner = await BarcodeScanner
-                      .scan();
+                  String codeScanner = await BarcodeScanner.scan();
+                  print("join game");
+                  print(codeScanner);
+                  game.send('joinGame',
+                      {"name": game.playerName, "code": codeScanner});
                 },
               ),
             ),

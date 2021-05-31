@@ -34,12 +34,11 @@ class GenerateScreenState extends State<GenerateScreen> {
   @override
   void initState() {
     super.initState();
-
-    ///
-    /// Ask to be notified when messages related to the game
-    /// are sent by the server
-    ///
     game.addListener(_onGameDataReceived);
+    game.send('getPlayerList', null);
+    if (game.roomCode != "") {
+      game.send('getPlayerList', game.roomCode);
+    }
   }
 
   @override
@@ -51,13 +50,18 @@ class GenerateScreenState extends State<GenerateScreen> {
   _onGameDataReceived(message) {
     switch (message["action"]) {
       case "generate_qr":
-        print(message);
         print(message["data"]["code"]);
         _dataString = message["data"]["code"];
         break;
 
       case "players_list":
         playersList = message["data"];
+        print("############");
+        print("############");
+        print("PLAYER LIST");
+        print(playersList);
+        print("############");
+        print("############");
         setState(() {});
         break;
 
@@ -76,24 +80,25 @@ class GenerateScreenState extends State<GenerateScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: Text(
-          'MON GROUPE',
-          style: TextStyle(
-            color: Colors.black54,
+    return new WillPopScope(
+      onWillPop: () async => false,
+      child: new Scaffold(
+        appBar: AppBar(
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back, color: Colors.black),
+            onPressed: () => Navigator.of(context).pop(context),
           ),
+          centerTitle: true,
+          title: Text(
+            "Room: " + game.roomCode,
+            style: TextStyle(
+              color: Colors.black54,
+            ),
+          ),
+          backgroundColor: Colors.red,
         ),
-        backgroundColor: Colors.red,
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.share),
-            onPressed: _captureAndSharePng,
-          )
-        ],
+        body: _contentWidget(),
       ),
-      body: _contentWidget(),
     );
   }
 

@@ -6,7 +6,7 @@ import 'package:web_socket_channel/status.dart' as status;
 WebSocketsNotifications sockets = new WebSocketsNotifications();
 
 const String _SERVER_ADDRESS =
-    'ws://[2a01:cb15:12d:aa00:94f8:b8a9:e2d1:c40a]:1330';
+    'ws://[2a01:cb15:12d:aa00:4c25:d2ca:6025:aeef]:1330';
 
 class WebSocketsNotifications {
   static final WebSocketsNotifications _sockets =
