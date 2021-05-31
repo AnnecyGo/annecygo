@@ -8,6 +8,7 @@ import 'package:latlong/latlong.dart';
 import 'package:http/http.dart' as http;
 import 'package:map_controller/map_controller.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:giffy_dialog/giffy_dialog.dart';
 
 
 class MapPage extends StatefulWidget {
@@ -109,17 +110,9 @@ class _MapPageState extends State<MapPage> {
       return Future.error(
           'Location permissions are permanently denied, we cannot request permissions.');
     }
-
     return await Geolocator.getCurrentPosition();
   }
-
-
-
-
   //-------------------------------
-
-
-
 
   @override
   void initState() {
@@ -159,12 +152,33 @@ class _MapPageState extends State<MapPage> {
       )),
       floatingActionButton: loaded
           ? FloatingActionButton(
-              onPressed: () => addMarker(context),
-              child: Icon(Icons.refresh),
+          onPressed: () {
+            showDialog(
+                context: context,builder: (_) => FlareGiffyDialog(
+              flareAnimation: 'loading',
+              title: Text('Participant',
+                style: TextStyle(
+                    fontSize: 22.0, fontWeight: FontWeight.w600),
+              ),
+              description: Text('This is a space reloading dialog box. This library helps you easily create fancy flare dialog.',
+                textAlign: TextAlign.center,
+                style: TextStyle(),
+              ),
+              entryAnimation: EntryAnimation.DEFAULT,
+              onOkButtonPressed: () {},
+            ) );
+          }
+              //onPressed: () => addMarker(context),
+              //child: Icon(Icons.add),
             )
           : CircularProgressIndicator(),
+
     ));
   }
+
+
+
+
 
   @override
   void dispose() {
