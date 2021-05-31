@@ -14,6 +14,7 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    Future.delayed(Duration.zero, () => alertStartUp());
     return new Scaffold(
       body: new Container(
         padding: EdgeInsets.fromLTRB(20, 70, 20, 50),
@@ -106,6 +107,33 @@ class _LoginPageState extends State<LoginPage> {
           ),
         ],
       ),
+    );
+  }
+
+  Future<void> alertStartUp() async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Bienvenue dans Annecy Go'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text("Pour commencer à utiliser l'application. Entrez un nom d'Utilisateur et commencez à accumuler des récompenses en explorant les monuments d'Annecy ! "),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text('Ok'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 
