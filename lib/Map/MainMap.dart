@@ -154,18 +154,18 @@ class _MapPageState extends State<MapPage> {
           ? FloatingActionButton(
           onPressed: () {
             showDialog(
-                context: context,builder: (_) => FlareGiffyDialog(
-              flareAnimation: 'loading',
-              title: Text('Participant',
-                style: TextStyle(
-                    fontSize: 22.0, fontWeight: FontWeight.w600),
-              ),
-              description: Text('This is a space reloading dialog box. This library helps you easily create fancy flare dialog.',
+              context: context,builder: (_) => NetworkGiffyDialog(
+              image: Image.network("https://i.ibb.co/QkL7H4R/participants.png",
+              ), title: Text('List des participants ......',
                 textAlign: TextAlign.center,
-                style: TextStyle(),
+                style: TextStyle(
+                    fontSize: 22.0,
+                    fontWeight: FontWeight.w600)),
+              description:Text('',
+                textAlign: TextAlign.center,
               ),
-              entryAnimation: EntryAnimation.DEFAULT,
-              onOkButtonPressed: () {},
+              entryAnimation: EntryAnimation.LEFT,
+              onlyCancelButton: true,
             ) );
           }
               //onPressed: () => addMarker(context),
