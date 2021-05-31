@@ -10,9 +10,11 @@ class TrueFalsePage extends StatefulWidget {
 class Question{
   var question;
   var answer;
-  Question(String uneQuestion,bool uneAnswer){
+  var comment;
+  Question(String uneQuestion,bool uneAnswer,String unComment){
     question = uneQuestion;
     answer = uneAnswer;
+    comment = unComment;
   }
 }
 
@@ -24,10 +26,10 @@ class _TrueFalsePageState extends State<TrueFalsePage> {
   Widget build(BuildContext context) {
 
 
-    Question question1 = new Question("le Ciel est bleu à Annecy", true);
-    Question question2= new Question("le nom de la rivière qui traverse la ville est le Thiou ?", true);
-    Question question3 = new Question("l'arquebuse est l'alcool local d'Annecy ?", false);
-    Question question4 = new Question("au dernier recensement le nombre d'habitants d'Annecy est 52 000 habitants ?", true);
+    Question question1 = new Question("le Ciel est bleu à Annecy", true,"Lève les yeux");
+    Question question2= new Question("le nom de la rivière qui traverse la ville est le Thiou ?", true,"Le Thiou la petite rivière de 3,5 km de long qui travèrse Annecy. Elle est le déversoir naturel du lac d'Annecy dans le Fier.");
+    Question question3 = new Question("l'arquebuse est l'alcool local d'Annecy ?", false,"C'est le génépi l’un des emblèmes de la Haute-Savoie, Plante rare qu’il est exclusivement possible de trouver en haute montagne (entre 2500 à 3200 mètres d’altitude)");
+    Question question4 = new Question("au dernier recensement le nombre d'habitants d'Annecy est 52 000 habitants ?", true,"La population légale 2018 pour Annecy était de 131 481 habitants");
 
 
     questions.add(question1);
@@ -164,17 +166,17 @@ class _TrueFalsePageState extends State<TrueFalsePage> {
     );
   }
 
-  Future<void> alertResult(String result) async {
+  Future<void> alertResult(String title,String comment) async {
     return showDialog<void>(
       context: context,
       barrierDismissible: false, // user must tap button!
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Fin du jeu'),
+          title: Text(title,style: TextStyle(fontWeight: FontWeight.bold,fontSize: 48)),
           content: SingleChildScrollView(
             child: ListBody(
               children: <Widget>[
-                Text(result),
+                Text(comment,style: TextStyle(fontWeight: FontWeight.bold,fontSize: 32),)
               ],
             ),
           ),
@@ -183,6 +185,7 @@ class _TrueFalsePageState extends State<TrueFalsePage> {
               child: Text('Ok'),
               onPressed: () {
                 Navigator.of(context).pop();
+                Navigator.pop(context);
               },
             ),
           ],
@@ -193,15 +196,15 @@ class _TrueFalsePageState extends State<TrueFalsePage> {
 
   void answerValidation(bool userAnswer){
     if(currentQuestion.answer == userAnswer){
-      alertResult("Vous avez gagné");
+      alertResult("Bravo c'est une bonne réponse",currentQuestion.comment);
       Navigator.push(
           context,
           MaterialPageRoute(
               builder: (context) => RewardPage()));
     } else {
-      alertResult("C'est perdu");
-
+      alertResult("C'est perdu dommage",currentQuestion.comment);
     }
+
   }
 
 }
