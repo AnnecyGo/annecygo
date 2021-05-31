@@ -7,6 +7,9 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong/latlong.dart';
 import 'package:http/http.dart' as http;
 import 'package:map_controller/map_controller.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:giffy_dialog/giffy_dialog.dart';
+
 
 class MapPage extends StatefulWidget {
   @override
@@ -59,10 +62,25 @@ class _MapPageState extends State<MapPage> {
             );
           }
 
+          StreamSubscription<Position> positionStream = Geolocator.getPositionStream().listen(
+                  (Position position)  { // ignore: cancel_subscriptions
+                //print(position == null ? 'lat + long ' : position.latitude.toString() + ', ' + position.longitude.toString());
+                statefulMapController.addMarker(
+                  name: "player",
+                  marker: Marker(
+                      point: LatLng(position.latitude, position.longitude),
+                      builder: (BuildContext context) {
+                        return const Icon(Icons.directions_walk);
+                      }),
+                );
+              });
+
+
           setState(() {
             loaded = true;
           });
         });
+
       });
     } on Exception catch (exception) {
       print(exception);
@@ -70,6 +88,31 @@ class _MapPageState extends State<MapPage> {
       print(error);
     }
   }
+
+  //-------Recup notre localisation avec les perms------------------------
+  Future<Position> determinePosition() async {
+    bool serviceEnabled;
+    LocationPermission permission;
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      return Future.error('Location services are disabled.');
+    }
+
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        return Future.error('Location permissions are denied');
+      }
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      return Future.error(
+          'Location permissions are permanently denied, we cannot request permissions.');
+    }
+    return await Geolocator.getCurrentPosition();
+  }
+  //-------------------------------
 
   @override
   void initState() {
@@ -109,12 +152,33 @@ class _MapPageState extends State<MapPage> {
       )),
       floatingActionButton: loaded
           ? FloatingActionButton(
-              onPressed: () => addMarker(context),
-              child: Icon(Icons.refresh),
+          onPressed: () {
+            showDialog(
+              context: context,builder: (_) => NetworkGiffyDialog(
+              image: Image.network("https://i.ibb.co/QkL7H4R/participants.png",
+              ), title: Text('List des participants ......',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    fontSize: 22.0,
+                    fontWeight: FontWeight.w600)),
+              description:Text('',
+                textAlign: TextAlign.center,
+              ),
+              entryAnimation: EntryAnimation.LEFT,
+              onlyCancelButton: true,
+            ) );
+          }
+              //onPressed: () => addMarker(context),
+              //child: Icon(Icons.add),
             )
           : CircularProgressIndicator(),
+
     ));
   }
+
+
+
+
 
   @override
   void dispose() {
