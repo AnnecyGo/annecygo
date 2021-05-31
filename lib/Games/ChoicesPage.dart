@@ -39,6 +39,13 @@ class _ChoicePageState extends State<ChoicePage> {
 
     Choice choice1 = new Choice("En quelle année Annecy a été rattaché à la savoie ?",mesChoix);
 
+    List<Answer> mesChoix3 = new List();
+    mesChoix.add( Answer("2017",true));
+    mesChoix.add( Answer("2009",false));
+    mesChoix.add(Answer("1998",false));
+    Choice choice2 = new Choice("En quelle année la toiture du palais de l'île a été renovée ?",mesChoix3);
+
+
 
 
     choices.add(choice1);
@@ -245,7 +252,6 @@ class _ChoicePageState extends State<ChoicePage> {
       alertResult("Vous avez gagné");
     } else {
       alertResult("C'est perdu");
-
     }
   }
 
