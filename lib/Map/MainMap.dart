@@ -7,6 +7,8 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong/latlong.dart';
 import 'package:http/http.dart' as http;
 import 'package:map_controller/map_controller.dart';
+import 'package:geolocator/geolocator.dart';
+
 
 class MapPage extends StatefulWidget {
   @override
@@ -59,10 +61,25 @@ class _MapPageState extends State<MapPage> {
             );
           }
 
+          StreamSubscription<Position> positionStream = Geolocator.getPositionStream().listen(
+                  (Position position)  { // ignore: cancel_subscriptions
+                //print(position == null ? 'lat + long ' : position.latitude.toString() + ', ' + position.longitude.toString());
+                statefulMapController.addMarker(
+                  name: "player",
+                  marker: Marker(
+                      point: LatLng(position.latitude, position.longitude),
+                      builder: (BuildContext context) {
+                        return const Icon(Icons.location_on);
+                      }),
+                );
+              });
+
+
           setState(() {
             loaded = true;
           });
         });
+
       });
     } on Exception catch (exception) {
       print(exception);
@@ -70,6 +87,39 @@ class _MapPageState extends State<MapPage> {
       print(error);
     }
   }
+
+  //-------Recup notre localisation avec les perms------------------------
+  Future<Position> determinePosition() async {
+    bool serviceEnabled;
+    LocationPermission permission;
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      return Future.error('Location services are disabled.');
+    }
+
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        return Future.error('Location permissions are denied');
+      }
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      return Future.error(
+          'Location permissions are permanently denied, we cannot request permissions.');
+    }
+
+    return await Geolocator.getCurrentPosition();
+  }
+
+
+
+
+  //-------------------------------
+
+
+
 
   @override
   void initState() {

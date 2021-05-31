@@ -38,6 +38,7 @@ dependencies:
   cupertino_icons: ^1.0.0
 
   http: ^0.12.2
+  geolocator: ^7.0.3
 
  # location: ^3.2.4
 
