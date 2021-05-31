@@ -1,22 +1,7 @@
 import 'package:flutter/material.dart';
 import 'rewardCategories.dart';
 
-void main() => runApp(MyApp());
 
-/// This is the main application widget.
-class MyApp extends StatelessWidget {
-  static const String _title = 'Page Reward';
-
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: _title,
-      theme: new ThemeData(primarySwatch: Colors.red, fontFamily: 'BigNoodleTitiling'),
-      home: new RewardPage(),
-    );
-  }
-}
 
 class RewardPage extends StatefulWidget {
   const RewardPage({Key key, this.callBack}) : super(key: key);
