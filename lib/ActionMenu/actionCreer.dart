@@ -108,9 +108,21 @@ class GenerateScreenState extends State<GenerateScreen> {
     List<Widget> children = playersList.map((playerInfo) {
       return new Container(
           margin: const EdgeInsets.only(top: 20.0),
-          child: Text(
-            playerInfo["name"],
-            style: new TextStyle(fontSize: 25),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            mainAxisSize: MainAxisSize.max,
+            children: [
+              Container(
+                margin: EdgeInsets.only(right: 10),
+                child: CircleAvatar(
+                  backgroundImage: NetworkImage(game.avatar),
+                ),
+              ),
+              Text(
+                playerInfo["name"],
+                style: new TextStyle(fontSize: 25),
+              )
+            ],
           ));
     }).toList();
 
@@ -162,20 +174,19 @@ class GenerateScreenState extends State<GenerateScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Container(
-                        padding: EdgeInsets.only(
-                            bottom: 20, top: 20, right: 20, left: 20),
-                        child: Expanded(
-                          child: new Column(
-                            children: <Widget>[
-                              //_buildJoin(),
-                              new Text(
-                                'Liste des joueurs:',
-                                style: new TextStyle(fontSize: 40),
-                              ),
-                              _playersList(),
-                            ],
+                      padding: EdgeInsets.only(
+                          bottom: 20, top: 20, right: 20, left: 20),
+                      child: new Column(
+                        children: <Widget>[
+                          //_buildJoin(),
+                          new Text(
+                            'Liste des joueurs:',
+                            style: new TextStyle(fontSize: 40),
                           ),
-                        )),
+                          _playersList(),
+                        ],
+                      ),
+                    ),
                   ],
                 ),
                 Column(
