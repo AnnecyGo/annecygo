@@ -8,6 +8,7 @@ WebSocketsNotifications sockets = new WebSocketsNotifications();
 const String _SERVER_ADDRESS = 'ws://86.200.111.40:1645';
 /*const String _SERVER_ADDRESS = 'ws://annecygo-api-monuments.herokuapp.com:1330';*/
 
+
 class WebSocketsNotifications {
   static final WebSocketsNotifications _sockets =
       new WebSocketsNotifications._internal();

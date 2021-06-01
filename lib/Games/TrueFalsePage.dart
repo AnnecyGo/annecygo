@@ -1,5 +1,5 @@
 import 'dart:math';
-
+import '../Reward/rewardPage.dart';
 import 'package:flutter/material.dart';
 
 class TrueFalsePage extends StatefulWidget {
@@ -30,11 +30,17 @@ class _TrueFalsePageState extends State<TrueFalsePage> {
     Question question2= new Question("le nom de la rivière qui traverse la ville est le Thiou ?", true,"Le Thiou la petite rivière de 3,5 km de long qui travèrse Annecy. Elle est le déversoir naturel du lac d'Annecy dans le Fier.");
     Question question3 = new Question("l'arquebuse est l'alcool local d'Annecy ?", false,"C'est le génépi l’un des emblèmes de la Haute-Savoie, Plante rare qu’il est exclusivement possible de trouver en haute montagne (entre 2500 à 3200 mètres d’altitude)");
     Question question4 = new Question("au dernier recensement le nombre d'habitants d'Annecy est 52 000 habitants ?", true,"La population légale 2018 pour Annecy était de 131 481 habitants");
-
+    Question question5 = new Question("Le nom du navire qui a coulé dans le lac d'Annecy le 12 mars 1971 est le France?", true,"C'est bien la carcasse du France qui repose à 30 mètres de profondeurs");
+    Question question6 = new Question("La formation du lac d'Annecy remonte à 51 000 ans durant une ère glacière", false,"La formation du lac remonté à plus de 18 000 lors de la fonte des glaciers des alpes");
+    Question question7 = new Question("Le Palais de I'Île d'Annecy à autrefois été utilisé comme Prison", true,"En 1325 du à sa place stratégique");
 
     questions.add(question1);
     questions.add(question2);
     questions.add(question3);
+    questions.add(question4);
+    questions.add(question5);
+    questions.add(question6);
+    questions.add(question7);
     currentQuestion = questions[Random().nextInt(questions.length)];
 
     return new Scaffold(
@@ -197,6 +203,10 @@ class _TrueFalsePageState extends State<TrueFalsePage> {
   void answerValidation(bool userAnswer){
     if(currentQuestion.answer == userAnswer){
       alertResult("Bravo c'est une bonne réponse",currentQuestion.comment);
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => RewardPage()));
     } else {
       alertResult("C'est perdu dommage",currentQuestion.comment);
     }
