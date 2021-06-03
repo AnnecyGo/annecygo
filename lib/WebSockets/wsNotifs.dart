@@ -1,13 +1,14 @@
+import 'package:annecygo/WebSockets/config.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:web_socket_channel/io.dart';
 import 'package:web_socket_channel/status.dart' as status;
+import '../main.dart';
 
 WebSocketsNotifications sockets = new WebSocketsNotifications();
 
-const String _SERVER_ADDRESS = 'ws://86.200.111.40:1645';
+String _SERVER_ADDRESS = 'ws://' + configApp.ip + ':' + configApp.port;
 /*const String _SERVER_ADDRESS = 'ws://annecygo-api-monuments.herokuapp.com:1330';*/
-
 
 class WebSocketsNotifications {
   static final WebSocketsNotifications _sockets =

@@ -1,0 +1,47 @@
+PODS:
+  - barcode_scan_fix (0.0.1):
+    - Flutter
+    - MTBBarcodeScanner
+  - Flutter (1.0.0)
+  - flutter_statusbarcolor (0.0.1):
+    - Flutter
+  - geolocator (6.2.0):
+    - Flutter
+  - MTBBarcodeScanner (5.0.11)
+  - path_provider (0.0.1):
+    - Flutter
+
+DEPENDENCIES:
+  - barcode_scan_fix (from `.symlinks/plugins/barcode_scan_fix/ios`)
+  - Flutter (from `Flutter`)
+  - flutter_statusbarcolor (from `.symlinks/plugins/flutter_statusbarcolor/ios`)
+  - geolocator (from `.symlinks/plugins/geolocator/ios`)
+  - path_provider (from `.symlinks/plugins/path_provider/ios`)
+
+SPEC REPOS:
+  trunk:
+    - MTBBarcodeScanner
+
+EXTERNAL SOURCES:
+  barcode_scan_fix:
+    :path: ".symlinks/plugins/barcode_scan_fix/ios"
+  Flutter:
+    :path: Flutter
+  flutter_statusbarcolor:
+    :path: ".symlinks/plugins/flutter_statusbarcolor/ios"
+  geolocator:
+    :path: ".symlinks/plugins/geolocator/ios"
+  path_provider:
+    :path: ".symlinks/plugins/path_provider/ios"
+
+SPEC CHECKSUMS:
+  barcode_scan_fix: 80dd65de55f27eec6591dd077c8b85f2b79e31f1
+  Flutter: 434fef37c0980e73bb6479ef766c45957d4b510c
+  flutter_statusbarcolor: 8afb1071ed8c58be929f1e32b36c629771fd2259
+  geolocator: f5e3de65e241caba7ce3e8a618803387bda73384
+  MTBBarcodeScanner: f453b33c4b7dfe545d8c6484ed744d55671788cb
+  path_provider: f96fff6166a8867510d2c25fdcc346327cc4b259
+
+PODFILE CHECKSUM: aafe91acc616949ddb318b77800a7f51bffa2a4c
+
+COCOAPODS: 1.10.1
