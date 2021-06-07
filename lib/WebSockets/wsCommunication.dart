@@ -28,6 +28,7 @@ class GameCommunication {
   }
 
   String get playerName => _playerName;
+  String get playerId => _playerID;
   String get roomCode => _roomCode;
   String get avatar => _avatar;
   bool get isAdmin => _isAdmin;
