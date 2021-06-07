@@ -77,41 +77,12 @@ class _MapPageState extends State<MapPage> {
       StreamSubscription<Position> positionStream =
           Geolocator.getPositionStream().listen((Position position) {
         //print(position == null ? 'lat + long ' : position.latitude.toString() + ', ' + position.longitude.toString());
-        statefulMapController.addMarker(
-          name: "player",
-          marker: Marker(
-              point: LatLng(position.latitude, position.longitude),
-              builder: (BuildContext context) {
-                return Container(
-                  width: 200.0,
-                  height: 200.0,
-                  child: FittedBox(
-                    fit: BoxFit.none,
-                    child: Container(
-                        width: 100.0,
-                        height: 50.0,
-                        child: Column(children: [
-                          Center(
-                            child: Text(game.playerName,
-                                style: TextStyle(fontFamily: "Big Noodle")),
-                          ),
-                          Container(
-                              height: 25,
-                              width: 25,
-                              margin: EdgeInsets.only(top: 5),
-                              child: new CircleAvatar(
-                                backgroundImage: NetworkImage(game.avatar),
-                                backgroundColor: Colors.white,
-                              ),
-                              decoration: new BoxDecoration(
-                                color: const Color(0xFFFFFFFF),
-                                shape: BoxShape.circle,
-                              ))
-                        ])),
-                  ),
-                );
-              }),
-        );
+
+        game.send('newGPSPosition', {
+          'code': game.roomCode,
+          'player': game.playerId,
+          'position': position
+        });
       });
     });
   }
@@ -162,14 +133,60 @@ class _MapPageState extends State<MapPage> {
   }
 
   List<dynamic> playersList = <dynamic>[];
+  List<dynamic> playersPosList = <dynamic>[];
 
   _onGameDataReceived(message) {
     switch (message["action"]) {
       case "players_list":
         playersList = message["data"];
-        // showDialog(context: context, builder: (_) => _playersList());
         setState(() {});
         break;
+
+      case "refreshPlayersPosition":
+        playersPosList = message["data"];
+        _refreshPlayersPos(playersPosList);
+        break;
+    }
+  }
+
+  _refreshPlayersPos(list) {
+    for (var player in list) {
+      //print(player["name"]);
+      statefulMapController.addMarker(
+        name: player["id"],
+        marker: Marker(
+            point: LatLng(player["position"][0], player["position"][1]),
+            builder: (BuildContext context) {
+              return Container(
+                width: 200.0,
+                height: 200.0,
+                child: FittedBox(
+                  fit: BoxFit.none,
+                  child: Container(
+                      width: 100.0,
+                      height: 50.0,
+                      child: Column(children: [
+                        Center(
+                          child: Text(player["name"],
+                              style: TextStyle(fontFamily: "Big Noodle")),
+                        ),
+                        Container(
+                            height: 25,
+                            width: 25,
+                            margin: EdgeInsets.only(top: 5),
+                            child: new CircleAvatar(
+                              backgroundImage: NetworkImage(game.avatar),
+                              backgroundColor: Colors.white,
+                            ),
+                            decoration: new BoxDecoration(
+                              color: const Color(0xFFFFFFFF),
+                              shape: BoxShape.circle,
+                            ))
+                      ])),
+                ),
+              );
+            }),
+      );
     }
   }
 
