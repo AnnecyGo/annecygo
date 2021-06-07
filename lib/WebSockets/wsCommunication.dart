@@ -16,6 +16,7 @@ class GameCommunication {
   String _roomCode = "";
   String _avatar = "";
   bool _isAdmin = false;
+  Iterable _monuments = null;
 
   factory GameCommunication() {
     return _game;
@@ -30,9 +31,14 @@ class GameCommunication {
   String get roomCode => _roomCode;
   String get avatar => _avatar;
   bool get isAdmin => _isAdmin;
+  Iterable get monuments => _monuments;
 
   setPlayerName(name) {
     _playerName = name;
+  }
+
+  setMonuments(data) {
+    _monuments = data;
   }
 
   _onMessageReceived(serverMessage) {

@@ -38,6 +38,7 @@ class GenerateScreenState extends State<GenerateScreen> {
     game.send('getPlayerList', null);
     if (game.roomCode != "") {
       game.send('getPlayerList', game.roomCode);
+      game.send('getRoom', game.roomCode);
     }
   }
 
@@ -65,16 +66,10 @@ class GenerateScreenState extends State<GenerateScreen> {
         navigateToMap(context);
         break;
 
-      /* case 'new_game':
-        Navigator.push(
-            context,
-            new MaterialPageRoute(
-              builder: (BuildContext context) => new GamePage(
-                opponentName: message["data"], // Name of the opponent
-                character: 'O',
-              ),
-            ));
-        break;*/
+      case "saveRoom":
+        var data = message["data"];
+        game.setMonuments(data);
+        break;
     }
   }
 

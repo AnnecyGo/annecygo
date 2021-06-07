@@ -28,117 +28,92 @@ class _MapPageState extends State<MapPage> {
   var markersArray = List<String>();
 
   void addMarker(BuildContext context) {
-    Map<String, String> headers = {"Keep-Alive": "timeout=20, max=1000"};
-    Future<http.Response> fetchMonuments() {
-      return http.get(Uri.http('86.200.111.40:1332', 'annecyRandomMonuments'),
-          headers: headers);
-    }
+    statefulMapController.removeMarkers(names: markersArray).then((val) {
+      markersArray = [];
 
-    setState(() {
-      loaded = false;
-    });
+      var jsonData = game.monuments;
+      for (var mon in jsonData) {
+        var lat = mon["geometry"]["coordinates"][1];
+        var lng = mon["geometry"]["coordinates"][0];
+        var name = mon["fields"]["tico"];
+        var id = mon["recordid"];
 
-    try {
-      fetchMonuments().then((response) {
-        statefulMapController.removeMarkers(names: markersArray).then((val) {
-          markersArray = [];
+        markersArray.add(id);
+        statefulMapController.addMarker(
+          name: id,
+          marker: Marker(
+              point: LatLng(lat, lng),
+              builder: (BuildContext context) {
+                return Container(
+                  width: 400.0,
+                  height: 200.0,
+                  child: FittedBox(
+                    fit: BoxFit.none,
+                    child: Container(
+                        width: 300.0,
+                        height: 80.0,
+                        child: Column(children: [
+                          Center(
+                            child: Text(name,
+                                style: TextStyle(
+                                    fontFamily: "Big Noodle",
+                                    fontSize: 15,
+                                    backgroundColor: Colors.white60)),
+                          ),
+                          Icon(
+                            Icons.location_on,
+                            color: Colors.red,
+                            size: 20,
+                          )
+                        ])),
+                  ),
+                );
+              }),
+        );
+      }
 
-          String jsonStr = response.body.toString();
-          var jsonData = jsonDecode(jsonStr);
-
-          for (var mon in jsonData) {
-            print(mon);
-            var lat = mon["geometry"]["coordinates"][1];
-            var lng = mon["geometry"]["coordinates"][0];
-            var name = mon["fields"]["tico"];
-            var id = mon["recordid"];
-
-            markersArray.add(id);
-            statefulMapController.addMarker(
-              name: id,
-              marker: Marker(
-                  point: LatLng(lat, lng),
-                  builder: (BuildContext context) {
-                    return Container(
-                      width: 400.0,
-                      height: 200.0,
-                      child: FittedBox(
-                        fit: BoxFit.none,
-                        child: Container(
-                            width: 300.0,
-                            height: 80.0,
-                            child: Column(children: [
-                              Center(
-                                child: Text(name,
-                                    style: TextStyle(
-                                        fontFamily: "Big Noodle",
-                                        fontSize: 15,
-                                        backgroundColor: Colors.white60)),
+      // ignore: unused_local_variable
+      // ignore: cancel_subscriptions
+      StreamSubscription<Position> positionStream =
+          Geolocator.getPositionStream().listen((Position position) {
+        //print(position == null ? 'lat + long ' : position.latitude.toString() + ', ' + position.longitude.toString());
+        statefulMapController.addMarker(
+          name: "player",
+          marker: Marker(
+              point: LatLng(position.latitude, position.longitude),
+              builder: (BuildContext context) {
+                return Container(
+                  width: 200.0,
+                  height: 200.0,
+                  child: FittedBox(
+                    fit: BoxFit.none,
+                    child: Container(
+                        width: 100.0,
+                        height: 50.0,
+                        child: Column(children: [
+                          Center(
+                            child: Text(game.playerName,
+                                style: TextStyle(fontFamily: "Big Noodle")),
+                          ),
+                          Container(
+                              height: 25,
+                              width: 25,
+                              margin: EdgeInsets.only(top: 5),
+                              child: new CircleAvatar(
+                                backgroundImage: NetworkImage(game.avatar),
+                                backgroundColor: Colors.white,
                               ),
-                              Icon(
-                                Icons.location_on,
-                                color: Colors.red,
-                                size: 20,
-                              )
-                            ])),
-                      ),
-                    );
-                  }),
-            );
-          }
-
-          // ignore: unused_local_variable
-          // ignore: cancel_subscriptions
-          StreamSubscription<Position> positionStream =
-              Geolocator.getPositionStream().listen((Position position) {
-            //print(position == null ? 'lat + long ' : position.latitude.toString() + ', ' + position.longitude.toString());
-            statefulMapController.addMarker(
-              name: "player",
-              marker: Marker(
-                  point: LatLng(position.latitude, position.longitude),
-                  builder: (BuildContext context) {
-                    return Container(
-                      width: 200.0,
-                      height: 200.0,
-                      child: FittedBox(
-                        fit: BoxFit.none,
-                        child: Container(
-                            width: 100.0,
-                            height: 50.0,
-                            child: Column(children: [
-                              Center(
-                                child: Text(game.playerName,
-                                    style: TextStyle(fontFamily: "Big Noodle")),
-                              ),
-                              Container(
-                                  height: 25,
-                                  width: 25,
-                                  margin: EdgeInsets.only(top: 5),
-                                  child: new CircleAvatar(
-                                    backgroundImage: NetworkImage(game.avatar),
-                                    backgroundColor: Colors.white,
-                                  ),
-                                  decoration: new BoxDecoration(
-                                    color: const Color(0xFFFFFFFF),
-                                    shape: BoxShape.circle,
-                                  ))
-                            ])),
-                      ),
-                    );
-                  }),
-            );
-          });
-
-          setState(() {
-            loaded = true;
-          });
-        });
+                              decoration: new BoxDecoration(
+                                color: const Color(0xFFFFFFFF),
+                                shape: BoxShape.circle,
+                              ))
+                        ])),
+                  ),
+                );
+              }),
+        );
       });
-    } on Exception catch (exception) {
-      print(exception);
-    } catch (error) {
-      print(error);
-    }
+    });
   }
 
   //-------Recup notre localisation avec les perms------------------------
