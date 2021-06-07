@@ -10,6 +10,7 @@ import 'package:map_controller/map_controller.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:giffy_dialog/giffy_dialog.dart';
 import '../WebSockets/wsCommunication.dart';
+import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
 
 class MapPage extends StatefulWidget {
   @override
@@ -46,6 +47,7 @@ class _MapPageState extends State<MapPage> {
           var jsonData = jsonDecode(jsonStr);
 
           for (var mon in jsonData) {
+            print(mon);
             var lat = mon["geometry"]["coordinates"][1];
             var lng = mon["geometry"]["coordinates"][0];
             var name = mon["fields"]["tico"];
@@ -57,21 +59,72 @@ class _MapPageState extends State<MapPage> {
               marker: Marker(
                   point: LatLng(lat, lng),
                   builder: (BuildContext context) {
-                    return const Icon(Icons.location_on);
+                    return Container(
+                      width: 400.0,
+                      height: 200.0,
+                      child: FittedBox(
+                        fit: BoxFit.none,
+                        child: Container(
+                            width: 300.0,
+                            height: 80.0,
+                            child: Column(children: [
+                              Center(
+                                child: Text(name,
+                                    style: TextStyle(
+                                        fontFamily: "Big Noodle",
+                                        fontSize: 15,
+                                        backgroundColor: Colors.white60)),
+                              ),
+                              Icon(
+                                Icons.location_on,
+                                color: Colors.red,
+                                size: 20,
+                              )
+                            ])),
+                      ),
+                    );
                   }),
             );
           }
 
+          // ignore: unused_local_variable
+          // ignore: cancel_subscriptions
           StreamSubscription<Position> positionStream =
               Geolocator.getPositionStream().listen((Position position) {
-            // ignore: cancel_subscriptions
             //print(position == null ? 'lat + long ' : position.latitude.toString() + ', ' + position.longitude.toString());
             statefulMapController.addMarker(
               name: "player",
               marker: Marker(
                   point: LatLng(position.latitude, position.longitude),
                   builder: (BuildContext context) {
-                    return const Icon(Icons.directions_walk);
+                    return Container(
+                      width: 200.0,
+                      height: 200.0,
+                      child: FittedBox(
+                        fit: BoxFit.none,
+                        child: Container(
+                            width: 100.0,
+                            height: 50.0,
+                            child: Column(children: [
+                              Center(
+                                child: Text(game.playerName,
+                                    style: TextStyle(fontFamily: "Big Noodle")),
+                              ),
+                              Container(
+                                  height: 25,
+                                  width: 25,
+                                  margin: EdgeInsets.only(top: 5),
+                                  child: new CircleAvatar(
+                                    backgroundImage: NetworkImage(game.avatar),
+                                    backgroundColor: Colors.white,
+                                  ),
+                                  decoration: new BoxDecoration(
+                                    color: const Color(0xFFFFFFFF),
+                                    shape: BoxShape.circle,
+                                  ))
+                            ])),
+                      ),
+                    );
                   }),
             );
           });
@@ -139,27 +192,34 @@ class _MapPageState extends State<MapPage> {
     switch (message["action"]) {
       case "players_list":
         playersList = message["data"];
-        showDialog(context: context, builder: (_) => _playersList());
+        // showDialog(context: context, builder: (_) => _playersList());
         setState(() {});
         break;
     }
   }
 
   Widget _playersList() {
-    print(playersList);
-
     List<Widget> children = playersList.map((playerInfo) {
-      return new Container(
-          margin: const EdgeInsets.only(top: 20.0),
-          child: Text(
-            playerInfo["name"],
-            style: new TextStyle(fontSize: 25),
-          ));
+      return new Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Container(
+              margin: const EdgeInsets.all(20),
+              child: Text(
+                playerInfo["name"],
+                style: new TextStyle(fontSize: 25),
+              )),
+          Container(
+              margin: const EdgeInsets.all(20),
+              child: Text(
+                playerInfo["score"].toString() + " points",
+                style: new TextStyle(fontSize: 25, color: Colors.red),
+              ))
+        ],
+      );
     }).toList();
 
-    return new Column(
-      children: children,
-    );
+    return new Column(children: children);
   }
 
   @override
@@ -187,9 +247,56 @@ class _MapPageState extends State<MapPage> {
         ],
       )),
       floatingActionButton: loaded
-          ? FloatingActionButton(onPressed: () {
-              game.send("getPlayerList", game.roomCode);
-            }
+          ? FloatingActionButton(
+              child: Icon(Icons.people),
+              onPressed: () {
+                game.send("getPlayerList", game.roomCode);
+                return showGeneralDialog(
+                  context: context,
+                  barrierDismissible: true,
+                  transitionDuration: Duration(milliseconds: 500),
+                  barrierLabel: MaterialLocalizations.of(context).dialogLabel,
+                  barrierColor: Colors.black.withOpacity(0.5),
+                  pageBuilder: (context, _, __) {
+                    return new Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: <Widget>[
+                        Container(
+                          width: MediaQuery.of(context).size.width,
+                          height: MediaQuery.of(context).size.height / 3 * 2,
+                          color: Colors.white,
+                          child: Card(
+                            child: ListView(
+                              shrinkWrap: true,
+                              children: <Widget>[
+                                Center(
+                                    child: Text(
+                                  "Score des joueurs",
+                                  style: TextStyle(fontSize: 40),
+                                )),
+                                _playersList()
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    );
+                  },
+                  transitionBuilder:
+                      (context, animation, secondaryAnimation, child) {
+                    return SlideTransition(
+                      position: CurvedAnimation(
+                        parent: animation,
+                        curve: Curves.easeOut,
+                      ).drive(Tween<Offset>(
+                        begin: Offset(0, -1.0),
+                        end: Offset.zero,
+                      )),
+                      child: child,
+                    );
+                  },
+                );
+              }
               //onPressed: () => addMarker(context),
               //child: Icon(Icons.add),
               )

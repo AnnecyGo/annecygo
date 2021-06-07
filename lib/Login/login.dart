@@ -4,6 +4,7 @@ import 'package:annecygo/Map/MainMap.dart';
 import '../ActionMenu/actionMenu.dart';
 import '../WebSockets/wsCommunication.dart';
 import '../main.dart';
+import '../Settings/settings.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -36,6 +37,14 @@ class _LoginPageState extends State<LoginPage> {
           ],
         ),
       ),
+      floatingActionButton: FloatingActionButton(
+          child: Icon(Icons.settings),
+          onPressed: () => {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => Settings()),
+                )
+              }),
     );
   }
 
