@@ -89,7 +89,7 @@ class _ActionMenuPageState extends State<ActionMenuPage> {
                       side: BorderSide(color: Colors.white),
                     ))),
                 child: new Text(
-                  'CREER',
+                  'CREER UNE PARTIE',
                   style: TextStyle(
                     fontWeight: FontWeight.w600,
                     color: Colors.black54,
@@ -134,7 +134,7 @@ class _ActionMenuPageState extends State<ActionMenuPage> {
                       side: BorderSide(color: Colors.white),
                     ))),
                 child: new Text(
-                  'REJOINDRE',
+                  'REJOINDRE UNE PARTIE',
                   style: TextStyle(
                     fontWeight: FontWeight.w600,
                     color: Colors.black54,

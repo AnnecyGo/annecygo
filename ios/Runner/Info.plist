@@ -41,5 +41,11 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>NSCameraUsageDescription</key>
+	<string>Required to scan the QR Code</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Required to show your position on the map</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Required to show your position on the map</string>
 </dict>
 </plist>
