@@ -134,17 +134,28 @@ class _MapPageState extends State<MapPage> {
 
   List<dynamic> playersList = <dynamic>[];
   List<dynamic> playersPosList = <dynamic>[];
+  bool userTabLoaded = false;
 
   _onGameDataReceived(message) {
     switch (message["action"]) {
       case "players_list":
         playersList = message["data"];
+        userTabLoaded = true;
         setState(() {});
         break;
 
       case "refreshPlayersPosition":
         playersPosList = message["data"];
         _refreshPlayersPos(playersPosList);
+        break;
+
+      case "newMonumentQuizz":
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => TrueFalsePage(
+                  message["data"]["monumentId"], message["data"]["quizz"]),
+            ));
         break;
     }
   }
@@ -216,17 +227,21 @@ class _MapPageState extends State<MapPage> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-        home: Scaffold(
+    return new WillPopScope(
+      onWillPop: () async => false,
+      child: _contentWidget(),
+    );
+  }
+
+  _contentWidget() {
+    return Scaffold(
       body: SafeArea(
           child: FlutterMap(
         mapController: mapController,
         options: MapOptions(
           onTap: (latlang) {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => TrueFalsePage()),
-            );
+            game.send('newMonumentQuizz',
+                {"room": game.roomCode, "id": game.playerId});
           },
           center: LatLng(45.899247, 6.129384),
           zoom: 13.0,
@@ -250,29 +265,45 @@ class _MapPageState extends State<MapPage> {
                   barrierLabel: MaterialLocalizations.of(context).dialogLabel,
                   barrierColor: Colors.black.withOpacity(0.5),
                   pageBuilder: (context, _, __) {
-                    return new Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: <Widget>[
-                        Container(
-                          width: MediaQuery.of(context).size.width,
-                          height: MediaQuery.of(context).size.height / 3 * 2,
-                          color: Colors.white,
-                          child: Card(
-                            child: ListView(
-                              shrinkWrap: true,
-                              children: <Widget>[
-                                Center(
-                                    child: Text(
-                                  "Score des joueurs",
-                                  style: TextStyle(fontSize: 40),
-                                )),
-                                _playersList()
-                              ],
-                            ),
-                          ),
-                        ),
-                      ],
-                    );
+                    return userTabLoaded
+                        ? new Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: <Widget>[
+                              Container(
+                                width: MediaQuery.of(context).size.width,
+                                height:
+                                    MediaQuery.of(context).size.height / 3 * 2,
+                                color: Colors.white,
+                                child: Card(
+                                  child: ListView(
+                                    shrinkWrap: true,
+                                    children: <Widget>[
+                                      Center(
+                                          child: Text(
+                                        "Score des joueurs",
+                                        style: TextStyle(fontSize: 40),
+                                      )),
+                                      _playersList()
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ],
+                          )
+                        : Row(
+                            mainAxisSize: MainAxisSize.max,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: <Widget>[
+                              Expanded(
+                                child: new Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: <Widget>[
+                                    CircularProgressIndicator()
+                                  ],
+                                ),
+                              ),
+                            ],
+                          );
                   },
                   transitionBuilder:
                       (context, animation, secondaryAnimation, child) {
@@ -293,6 +324,6 @@ class _MapPageState extends State<MapPage> {
               //child: Icon(Icons.add),
               )
           : CircularProgressIndicator(),
-    ));
+    );
   }
 }

@@ -7,19 +7,19 @@ class ChoicePage extends StatefulWidget {
   _ChoicePageState createState() => _ChoicePageState();
 }
 
-class Answer{
+class Answer {
   var reponse;
   var answer;
-  Answer(String uneReponse,bool uneAnswer){
+  Answer(String uneReponse, bool uneAnswer) {
     reponse = uneReponse;
     answer = uneAnswer;
   }
 }
 
-class Choice{
+class Choice {
   var question;
   List<Answer> answers;
-  Choice(String uneQuestion,List<Answer> lesAnswers){
+  Choice(String uneQuestion, List<Answer> lesAnswers) {
     question = uneQuestion;
     answers = lesAnswers;
   }
@@ -31,28 +31,29 @@ class _ChoicePageState extends State<ChoicePage> {
 
   @override
   Widget build(BuildContext context) {
-
     List<Answer> mesChoix = new List();
-    mesChoix.add( Answer("1665",true));
-    mesChoix.add( Answer("1667",false));
-    mesChoix.add(Answer("1664",false));
+    mesChoix.add(Answer("1665", true));
+    mesChoix.add(Answer("1667", false));
+    mesChoix.add(Answer("1664", false));
 
-    Choice choice1 = new Choice("En quelle année Annecy a été rattaché à la savoie ?",mesChoix);
+    Choice choice1 = new Choice(
+        "En quelle année Annecy a été rattaché à la savoie ?", mesChoix);
 
     List<Answer> mesChoix2 = new List();
-    mesChoix.add( Answer("27,59 km²",true));
-    mesChoix.add( Answer("18,69 km²",false));
-    mesChoix.add(Answer("55,17 km²",false));
-    Choice choice2 = new Choice("En quelle année la toiture du palais de l'île a été renové ?",mesChoix2);
+    mesChoix.add(Answer("27,59 km²", true));
+    mesChoix.add(Answer("18,69 km²", false));
+    mesChoix.add(Answer("55,17 km²", false));
+    Choice choice2 = new Choice(
+        "En quelle année la toiture du palais de l'île a été renové ?",
+        mesChoix2);
 
     List<Answer> mesChoix3 = new List();
-    mesChoix.add( Answer("2017",true));
-    mesChoix.add( Answer("2009",false));
-    mesChoix.add(Answer("1998",false));
-    Choice choice3 = new Choice("En quelle année la toiture du palais de l'île a été renovée ?",mesChoix3);
-
-
-
+    mesChoix.add(Answer("2017", true));
+    mesChoix.add(Answer("2009", false));
+    mesChoix.add(Answer("1998", false));
+    Choice choice3 = new Choice(
+        "En quelle année la toiture du palais de l'île a été renovée ?",
+        mesChoix3);
 
     choices.add(choice1);
     choices.add(choice2);
@@ -62,13 +63,9 @@ class _ChoicePageState extends State<ChoicePage> {
 
     return new Scaffold(
       backgroundColor: Colors.redAccent,
-      appBar: AppBar(
-        title: Text("Mini-Jeux"),
-
-      ),
       body: new Center(
-        child : new Container(
-          decoration : BoxDecoration(
+        child: new Container(
+          decoration: BoxDecoration(
             gradient: LinearGradient(
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
@@ -100,7 +97,7 @@ class _ChoicePageState extends State<ChoicePage> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Container(
-                    decoration : BoxDecoration(
+                    decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10.0),
                       gradient: LinearGradient(
                         begin: Alignment.topLeft,
@@ -115,33 +112,29 @@ class _ChoicePageState extends State<ChoicePage> {
                         ],
                       ),
                     ),
-                    child : ElevatedButton(
+                    child: ElevatedButton(
                         style: ButtonStyle(
-                            padding: MaterialStateProperty.all(EdgeInsets.fromLTRB(40,10,40,10)),
-                            backgroundColor: MaterialStateProperty.all<Color>(Colors.transparent) ,
-                            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                                RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10.0),
-                                  side: BorderSide(color: Colors.black),
-
-                                )
-                            )
-                        ),
-
+                            padding: MaterialStateProperty.all(
+                                EdgeInsets.fromLTRB(40, 10, 40, 10)),
+                            backgroundColor: MaterialStateProperty.all<Color>(
+                                Colors.transparent),
+                            shape: MaterialStateProperty.all<
+                                RoundedRectangleBorder>(RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                              side: BorderSide(color: Colors.black),
+                            ))),
                         child: new Text(
                           currentChoice.answers[0].reponse,
-                          style:
-                          TextStyle(
+                          style: TextStyle(
                             fontWeight: FontWeight.w700,
                             color: Colors.black87,
                             fontSize: 36,
                           ),
                         ),
-                        onPressed: () => answerValidation(0,true)
-                    ),
+                        onPressed: () => answerValidation(0, true)),
                   ),
                   Container(
-                    decoration : BoxDecoration(
+                    decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10.0),
                       gradient: LinearGradient(
                         begin: Alignment.topLeft,
@@ -156,31 +149,29 @@ class _ChoicePageState extends State<ChoicePage> {
                         ],
                       ),
                     ),
-                    child : ElevatedButton(
+                    child: ElevatedButton(
                         style: ButtonStyle(
-                            padding: MaterialStateProperty.all(EdgeInsets.fromLTRB(40,10,40,10)),
-                            backgroundColor: MaterialStateProperty.all<Color>(Colors.transparent) ,
-                            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                                RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10.0),
-                                  side: BorderSide(color: Colors.black),
-
-                                )
-                            )
-                        ),
+                            padding: MaterialStateProperty.all(
+                                EdgeInsets.fromLTRB(40, 10, 40, 10)),
+                            backgroundColor: MaterialStateProperty.all<Color>(
+                                Colors.transparent),
+                            shape: MaterialStateProperty.all<
+                                RoundedRectangleBorder>(RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                              side: BorderSide(color: Colors.black),
+                            ))),
                         child: new Text(
                           currentChoice.answers[1].reponse,
-                          style:
-                          TextStyle(
+                          style: TextStyle(
                             fontWeight: FontWeight.w700,
                             color: Colors.black87,
                             fontSize: 36,
                           ),
                         ),
-                        onPressed: () => answerValidation(1,true)
-                    ),
-                  ), Container(
-                    decoration : BoxDecoration(
+                        onPressed: () => answerValidation(1, true)),
+                  ),
+                  Container(
+                    decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10.0),
                       gradient: LinearGradient(
                         begin: Alignment.topLeft,
@@ -195,29 +186,26 @@ class _ChoicePageState extends State<ChoicePage> {
                         ],
                       ),
                     ),
-                    child : ElevatedButton(
+                    child: ElevatedButton(
                         style: ButtonStyle(
-                            padding: MaterialStateProperty.all(EdgeInsets.fromLTRB(40,10,40,10)),
-                            backgroundColor: MaterialStateProperty.all<Color>(Colors.transparent) ,
-                            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                                RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10.0),
-                                  side: BorderSide(color: Colors.black),
-
-                                )
-                            )
-                        ),
+                            padding: MaterialStateProperty.all(
+                                EdgeInsets.fromLTRB(40, 10, 40, 10)),
+                            backgroundColor: MaterialStateProperty.all<Color>(
+                                Colors.transparent),
+                            shape: MaterialStateProperty.all<
+                                RoundedRectangleBorder>(RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                              side: BorderSide(color: Colors.black),
+                            ))),
                         child: new Text(
                           currentChoice.answers[2].reponse,
-                          style:
-                          TextStyle(
+                          style: TextStyle(
                             fontWeight: FontWeight.w700,
                             color: Colors.black87,
                             fontSize: 36,
                           ),
                         ),
-                        onPressed: () => answerValidation(2,true)
-                    ),
+                        onPressed: () => answerValidation(2, true)),
                   ),
                 ],
               )
@@ -255,14 +243,14 @@ class _ChoicePageState extends State<ChoicePage> {
     );
   }
 
-  void answerValidation(int i,bool userAnswer,){
-    if(currentChoice.answers[i].answer == userAnswer){
+  void answerValidation(
+    int i,
+    bool userAnswer,
+  ) {
+    if (currentChoice.answers[i].answer == userAnswer) {
       alertResult("Vous avez gagné");
     } else {
       alertResult("C'est perdu");
     }
   }
-
-
-
 }

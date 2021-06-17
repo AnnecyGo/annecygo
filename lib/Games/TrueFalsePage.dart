@@ -1,57 +1,65 @@
 import 'dart:math';
 import '../Reward/rewardPage.dart';
 import 'package:flutter/material.dart';
+import '../WebSockets/wsCommunication.dart';
 
 class TrueFalsePage extends StatefulWidget {
+  final Map<String, dynamic> currentQuestion;
+  final String monumentId;
+  const TrueFalsePage(this.monumentId, this.currentQuestion);
+
   @override
   _TrueFalsePageState createState() => _TrueFalsePageState();
 }
 
-class Question{
-  var question;
-  var answer;
-  var comment;
-  Question(String uneQuestion,bool uneAnswer,String unComment){
-    question = uneQuestion;
-    answer = uneAnswer;
-    comment = unComment;
-  }
-}
-
 class _TrueFalsePageState extends State<TrueFalsePage> {
-  List<Question> questions = new List();
-  Question currentQuestion;
+  @override
+  void initState() {
+    game.addListener(_onGameDataReceived);
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    game.removeListener(_onGameDataReceived);
+    super.dispose();
+  }
+
+  _onGameDataReceived(message) {
+    switch (message["action"]) {
+      case "refreshPlayersPosition":
+        break;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
+    print(widget.currentQuestion);
+    return new WillPopScope(
+      onWillPop: () async => false,
+      child: new Scaffold(
+        appBar: AppBar(
+          automaticallyImplyLeading: false,
+          centerTitle: true,
+          title: Text(
+            "Vrai ou Faux ?",
+            style: TextStyle(
+              color: Colors.black54,
+            ),
+          ),
+          backgroundColor: Colors.red,
+        ),
+        body: _contentWidget(),
+      ),
+    );
+  }
 
-
-    Question question1 = new Question("le Ciel est bleu à Annecy", true,"Lève les yeux");
-    Question question2= new Question("le nom de la rivière qui traverse la ville est le Thiou ?", true,"Le Thiou la petite rivière de 3,5 km de long qui travèrse Annecy. Elle est le déversoir naturel du lac d'Annecy dans le Fier.");
-    Question question3 = new Question("l'arquebuse est l'alcool local d'Annecy ?", false,"C'est le génépi l’un des emblèmes de la Haute-Savoie, Plante rare qu’il est exclusivement possible de trouver en haute montagne (entre 2500 à 3200 mètres d’altitude)");
-    Question question4 = new Question("au dernier recensement le nombre d'habitants d'Annecy est 52 000 habitants ?", true,"La population légale 2018 pour Annecy était de 131 481 habitants");
-    Question question5 = new Question("Le nom du navire qui a coulé dans le lac d'Annecy le 12 mars 1971 est le France?", true,"C'est bien la carcasse du France qui repose à 30 mètres de profondeurs");
-    Question question6 = new Question("La formation du lac d'Annecy remonte à 51 000 ans durant une ère glacière", false,"La formation du lac remonté à plus de 18 000 lors de la fonte des glaciers des alpes");
-    Question question7 = new Question("Le Palais de I'Île d'Annecy à autrefois été utilisé comme Prison", true,"En 1325 du à sa place stratégique");
-
-    questions.add(question1);
-    questions.add(question2);
-    questions.add(question3);
-    questions.add(question4);
-    questions.add(question5);
-    questions.add(question6);
-    questions.add(question7);
-    currentQuestion = questions[Random().nextInt(questions.length)];
-
+  _contentWidget() {
     return new Scaffold(
       backgroundColor: Colors.redAccent,
-      appBar: AppBar(
-        title: Text("Mini-Jeux"),
-
-      ),
       body: new Center(
-        child : new Container(
-          decoration : BoxDecoration(
+        child: new Container(
+          decoration: BoxDecoration(
             gradient: LinearGradient(
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
@@ -72,7 +80,7 @@ class _TrueFalsePageState extends State<TrueFalsePage> {
             children: [
               Container(
                 padding: EdgeInsets.fromLTRB(20, 20, 20, 20),
-                child: Text(currentQuestion.question,
+                child: Text(widget.currentQuestion["question"],
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       color: Colors.white,
@@ -83,7 +91,7 @@ class _TrueFalsePageState extends State<TrueFalsePage> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Container(
-                    decoration : BoxDecoration(
+                    decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10.0),
                       gradient: LinearGradient(
                         begin: Alignment.topLeft,
@@ -98,33 +106,29 @@ class _TrueFalsePageState extends State<TrueFalsePage> {
                         ],
                       ),
                     ),
-                    child : ElevatedButton(
+                    child: ElevatedButton(
                         style: ButtonStyle(
-                            padding: MaterialStateProperty.all(EdgeInsets.fromLTRB(40,10,40,10)),
-                            backgroundColor: MaterialStateProperty.all<Color>(Colors.transparent) ,
-                            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                                RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10.0),
-                                  side: BorderSide(color: Colors.black),
-
-                                )
-                            )
-                        ),
-
+                            padding: MaterialStateProperty.all(
+                                EdgeInsets.fromLTRB(40, 10, 40, 10)),
+                            backgroundColor: MaterialStateProperty.all<Color>(
+                                Colors.transparent),
+                            shape: MaterialStateProperty.all<
+                                RoundedRectangleBorder>(RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                              side: BorderSide(color: Colors.black),
+                            ))),
                         child: new Text(
                           'VRAI',
-                          style:
-                          TextStyle(
+                          style: TextStyle(
                             fontWeight: FontWeight.w700,
                             color: Colors.black87,
                             fontSize: 36,
                           ),
                         ),
-                        onPressed: () => answerValidation(true)
-                    ),
+                        onPressed: () => answerValidation(true)),
                   ),
                   Container(
-                    decoration : BoxDecoration(
+                    decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10.0),
                       gradient: LinearGradient(
                         begin: Alignment.topLeft,
@@ -139,29 +143,26 @@ class _TrueFalsePageState extends State<TrueFalsePage> {
                         ],
                       ),
                     ),
-                    child : ElevatedButton(
+                    child: ElevatedButton(
                         style: ButtonStyle(
-                            padding: MaterialStateProperty.all(EdgeInsets.fromLTRB(40,10,40,10)),
-                            backgroundColor: MaterialStateProperty.all<Color>(Colors.transparent) ,
-                            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                                RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10.0),
-                                  side: BorderSide(color: Colors.black),
-
-                                )
-                            )
-                        ),
+                            padding: MaterialStateProperty.all(
+                                EdgeInsets.fromLTRB(40, 10, 40, 10)),
+                            backgroundColor: MaterialStateProperty.all<Color>(
+                                Colors.transparent),
+                            shape: MaterialStateProperty.all<
+                                RoundedRectangleBorder>(RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                              side: BorderSide(color: Colors.black),
+                            ))),
                         child: new Text(
                           'FAUX',
-                          style:
-                          TextStyle(
+                          style: TextStyle(
                             fontWeight: FontWeight.w700,
                             color: Colors.black87,
                             fontSize: 36,
                           ),
                         ),
-                        onPressed: () => answerValidation(false)
-                    ),
+                        onPressed: () => answerValidation(false)),
                   ),
                 ],
               )
@@ -172,17 +173,21 @@ class _TrueFalsePageState extends State<TrueFalsePage> {
     );
   }
 
-  Future<void> alertResult(String title,String comment) async {
+  Future<void> alertResult(String title, String comment) async {
     return showDialog<void>(
       context: context,
       barrierDismissible: false, // user must tap button!
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text(title,style: TextStyle(fontWeight: FontWeight.bold,fontSize: 48)),
+          title: Text(title,
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 48)),
           content: SingleChildScrollView(
             child: ListBody(
               children: <Widget>[
-                Text(comment,style: TextStyle(fontWeight: FontWeight.bold,fontSize: 32),)
+                Text(
+                  comment,
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 32),
+                )
               ],
             ),
           ),
@@ -200,17 +205,28 @@ class _TrueFalsePageState extends State<TrueFalsePage> {
     );
   }
 
-  void answerValidation(bool userAnswer){
-    if(currentQuestion.answer == userAnswer){
-      alertResult("Bravo c'est une bonne réponse",currentQuestion.comment);
-      Navigator.push(
+  void answerValidation(bool userAnswer) {
+    if (widget.currentQuestion["answer"] == userAnswer) {
+      alertResult(
+          "Bravo c'est une bonne réponse", widget.currentQuestion["comment"]);
+      game.send("newUserScore", {
+        "room": game.roomCode,
+        "id": game.playerId,
+        "answer": true,
+        "monumentId": widget.monumentId
+      });
+      /*Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (context) => RewardPage()));
+              builder: (context) => RewardPage()));*/
     } else {
-      alertResult("C'est perdu dommage",currentQuestion.comment);
+      alertResult("C'est perdu dommage", widget.currentQuestion["comment"]);
+      game.send("newUserScore", {
+        "room": game.roomCode,
+        "id": game.playerId,
+        "answer": false,
+        "monumentId": widget.monumentId
+      });
     }
-
   }
-
 }
