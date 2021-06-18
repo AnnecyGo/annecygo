@@ -16,14 +16,10 @@ class GenerateScreen extends StatefulWidget {
 }
 
 class GenerateScreenState extends State<GenerateScreen> {
-  static const double _topSectionTopPadding = 50.0;
-  static const double _topSectionBottomPadding = 20.0;
-  static const double _topSectionHeight = 20.0;
+
 
   GlobalKey globalKey = new GlobalKey();
   String _dataString = "";
-  String _inputErrorText = "";
-  final TextEditingController _textController = TextEditingController();
 
   List<dynamic> playersList = <dynamic>[];
 
@@ -56,7 +52,7 @@ class GenerateScreenState extends State<GenerateScreen> {
         break;
 
       case "players_list":
-        playersList = message["data"] + message["data"] + message["data"] + message["data"] + message["data"] + message["data"] + message["data"] + message["data"] + message["data"];
+        playersList = message["data"];
         print("PLAYER LIST");
         print(playersList);
         setState(() {});
@@ -98,13 +94,10 @@ class GenerateScreenState extends State<GenerateScreen> {
   }
 
   Widget _playersList() {
-    print(playersList);
-
     List<Widget> children = playersList.map((playerInfo) {
       return new Container(
-          margin: const EdgeInsets.only(top: 20.0),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.center,
             mainAxisSize: MainAxisSize.max,
             children: [
               Container(
@@ -121,8 +114,13 @@ class GenerateScreenState extends State<GenerateScreen> {
           ));
     }).toList();
 
-    return new Column(
-      children: children,
+    return  new Container(
+        child: GridView.count(
+          shrinkWrap: true,
+          crossAxisCount: 2,
+          children: children,
+          childAspectRatio: 32/9,
+        ),
     );
   }
 
@@ -223,17 +221,14 @@ class GenerateScreenState extends State<GenerateScreen> {
                       color: Colors.black,
                       height: 36,
                     )),
-                Text(
-                  'Liste des joueurs:',
-                  style: new TextStyle(fontSize: 40),
-                ),
+                Container(
+                    margin: const EdgeInsets.only(left: 10.0, right: 20.0),
+                    child:  Text(
+                      'Liste des joueurs:',
+                      style: new TextStyle(fontSize: 40),
+                    ),),
                 Expanded(
-                  child:  SingleChildScrollView(
-                    child : Container(
-                        padding: EdgeInsets.only(
-                            bottom: 10, top: 10, right: 10, left: 10),
-                    child: _playersList()),
-                  ),
+                    child: _playersList(),
                 )
               ],
             )
