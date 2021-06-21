@@ -16,14 +16,10 @@ class GenerateScreen extends StatefulWidget {
 }
 
 class GenerateScreenState extends State<GenerateScreen> {
-  static const double _topSectionTopPadding = 50.0;
-  static const double _topSectionBottomPadding = 20.0;
-  static const double _topSectionHeight = 20.0;
+
 
   GlobalKey globalKey = new GlobalKey();
   String _dataString = "";
-  String _inputErrorText = "";
-  final TextEditingController _textController = TextEditingController();
 
   List<dynamic> playersList = <dynamic>[];
 
@@ -98,13 +94,10 @@ class GenerateScreenState extends State<GenerateScreen> {
   }
 
   Widget _playersList() {
-    print(playersList);
-
     List<Widget> children = playersList.map((playerInfo) {
       return new Container(
-          margin: const EdgeInsets.only(top: 20.0),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.center,
             mainAxisSize: MainAxisSize.max,
             children: [
               Container(
@@ -121,8 +114,13 @@ class GenerateScreenState extends State<GenerateScreen> {
           ));
     }).toList();
 
-    return new Column(
-      children: children,
+    return  new Container(
+        child: GridView.count(
+          shrinkWrap: true,
+          crossAxisCount: 2,
+          children: children,
+          childAspectRatio: 32/9,
+        ),
     );
   }
 
@@ -156,43 +154,18 @@ class GenerateScreenState extends State<GenerateScreen> {
   }
 
   _contentWidget() {
-    final bodyHeight = MediaQuery.of(context).size.height -
-        MediaQuery.of(context).viewInsets.bottom;
     return Container(
-      color: const Color(0xFFFFFFFF),
       child: !playersList.isEmpty
           ? Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Container(
-                      padding: EdgeInsets.only(
-                          bottom: 20, top: 20, right: 20, left: 20),
-                      child: new Column(
-                        children: <Widget>[
-                          //_buildJoin(),
-                          new Text(
-                            'Liste des joueurs:',
-                            style: new TextStyle(fontSize: 40),
-                          ),
-                          _playersList(),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
                 Column(
                   children: <Widget>[
-                    Container(
-                        margin: const EdgeInsets.only(left: 10.0, right: 20.0),
-                        child: Divider(
-                          color: Colors.black,
-                          height: 36,
-                        )),
-                    Text("SCAN LE QRCODE POUR REJOINDRE"),
+                    new Text(
+                      'Scan le QR Code pour rejoindre :',
+                      style: new TextStyle(fontSize: 40),
+                    ),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
@@ -209,38 +182,53 @@ class GenerateScreenState extends State<GenerateScreen> {
                       minWidth: 200.0,
                       child: game.isAdmin
                           ? new Container(
-                              padding: EdgeInsets.only(
-                                  bottom: 20, top: 20, right: 20, left: 20),
-                              child: ElevatedButton(
-                                style: ButtonStyle(
-                                    padding: MaterialStateProperty.all(
-                                        EdgeInsets.fromLTRB(20, 10, 20, 10)),
-                                    backgroundColor:
-                                        MaterialStateProperty.all<Color>(
-                                            Colors.red),
-                                    minimumSize: MaterialStateProperty.all(
-                                        Size(250.0, 20.0)),
-                                    shape: MaterialStateProperty.all<
-                                            RoundedRectangleBorder>(
-                                        RoundedRectangleBorder(
+                          padding: EdgeInsets.only(
+                              bottom: 10, top: 10, right: 10, left: 10),
+                          child: ElevatedButton(
+                            style: ButtonStyle(
+                                padding: MaterialStateProperty.all(
+                                    EdgeInsets.fromLTRB(20, 10, 20, 10)),
+                                backgroundColor:
+                                MaterialStateProperty.all<Color>(
+                                    Colors.red),
+                                minimumSize: MaterialStateProperty.all(
+                                    Size(250.0, 20.0)),
+                                shape: MaterialStateProperty.all<
+                                    RoundedRectangleBorder>(
+                                    RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(10.0),
                                       side: BorderSide(color: Colors.white),
                                     ))),
-                                child: new Text(
-                                  "LET'S GO",
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w600,
-                                    color: Colors.black54,
-                                    fontSize: 40,
-                                  ),
-                                ),
-                                onPressed: () {
-                                  game.send('startGame', game.roomCode);
-                                },
-                              ))
+                            child: new Text(
+                              "LET'S GO",
+                              style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                                color: Colors.black54,
+                                fontSize: 40,
+                              ),
+                            ),
+                            onPressed: () {
+                              game.send('startGame', game.roomCode);
+                            },
+                          ))
                           : Text("En attende du chef de partie..."),
                     ),
                   ],
+                ),
+                Container(
+                    margin: const EdgeInsets.only(left: 10.0, right: 20.0),
+                    child: Divider(
+                      color: Colors.black,
+                      height: 36,
+                    )),
+                Container(
+                    margin: const EdgeInsets.only(left: 10.0, right: 20.0),
+                    child:  Text(
+                      'Liste des joueurs:',
+                      style: new TextStyle(fontSize: 40),
+                    ),),
+                Expanded(
+                    child: _playersList(),
                 )
               ],
             )
