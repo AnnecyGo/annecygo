@@ -75,7 +75,7 @@ class _MapPageState extends State<MapPage> {
       // ignore: unused_local_variable
       // ignore: cancel_subscriptions
       StreamSubscription<Position> positionStream =
-          Geolocator.getPositionStream().listen((Position position) {
+      Geolocator.getPositionStream().listen((Position position) {
         //print(position == null ? 'lat + long ' : position.latitude.toString() + ', ' + position.longitude.toString());
 
         game.send('newGPSPosition', {
@@ -118,9 +118,9 @@ class _MapPageState extends State<MapPage> {
     mapController = MapController();
     statefulMapController = StatefulMapController(mapController: mapController);
     statefulMapController.onReady.then((_) => setState(() {
-          ready = true;
-          addMarker(context);
-        }));
+      ready = true;
+      addMarker(context);
+    }));
     sub = statefulMapController.changeFeed.listen((change) => setState(() {}));
     super.initState();
   }
@@ -131,6 +131,8 @@ class _MapPageState extends State<MapPage> {
     game.removeListener(_onGameDataReceived);
     super.dispose();
   }
+
+  List<dynamic> parcoursList = <dynamic>[];
 
   List<dynamic> playersList = <dynamic>[];
   List<dynamic> playersPosList = <dynamic>[];
@@ -231,6 +233,28 @@ class _MapPageState extends State<MapPage> {
     return new Column(children: children);
   }
 
+  Widget _parcoursList() {
+    List<Widget> children = game.monuments.map((monument) {
+
+
+        return new Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Container(
+                margin: const EdgeInsets.all(20),
+                child: Text(
+                  monument["fields"]["tico"],
+                  style: new TextStyle(fontSize: 25, color: Colors.red),
+                )
+            )
+          ],
+        );
+
+    }).toList();
+
+    return new Column(children: children);
+  }
+
   @override
   Widget build(BuildContext context) {
     return new WillPopScope(
@@ -243,27 +267,32 @@ class _MapPageState extends State<MapPage> {
     return Scaffold(
       body: SafeArea(
           child: FlutterMap(
-        mapController: mapController,
-        options: MapOptions(
-          onTap: (latlang) {
-            game.send('newMonumentQuizz',
-                {"room": game.roomCode, "id": game.playerId});
-          },
-          center: LatLng(45.899247, 6.129384),
-          zoom: 13.0,
-        ),
-        layers: [
-          statefulMapController.tileLayer,
-          MarkerLayerOptions(
-            markers: statefulMapController.markers,
-          ),
-        ],
-      )),
-      floatingActionButton: loaded
-          ? FloatingActionButton(
-              child: Icon(Icons.people),
+            mapController: mapController,
+            options: MapOptions(
+              onTap: (latlang) {
+                game.send('newMonumentQuizz',
+                    {"room": game.roomCode, "id": game.playerId});
+              },
+              center: LatLng(45.899247, 6.129384),
+              zoom: 13.0,
+            ),
+            layers: [
+              statefulMapController.tileLayer,
+              MarkerLayerOptions(
+                markers: statefulMapController.markers,
+              ),
+            ],
+          )
+      ),
+      floatingActionButtonLocation:
+      FloatingActionButtonLocation.centerDocked,
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            FloatingActionButton(
               onPressed: () {
-                game.send("getPlayerList", game.roomCode);
                 return showGeneralDialog(
                   context: context,
                   barrierDismissible: true,
@@ -271,45 +300,30 @@ class _MapPageState extends State<MapPage> {
                   barrierLabel: MaterialLocalizations.of(context).dialogLabel,
                   barrierColor: Colors.black.withOpacity(0.5),
                   pageBuilder: (context, _, __) {
-                    return userTabLoaded
-                        ? new Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: <Widget>[
-                              Container(
-                                width: MediaQuery.of(context).size.width,
-                                height:
-                                    MediaQuery.of(context).size.height / 3 * 2,
-                                color: Colors.white,
-                                child: Card(
-                                  child: ListView(
-                                    shrinkWrap: true,
-                                    children: <Widget>[
-                                      Center(
-                                          child: Text(
-                                        "Score des joueurs",
-                                        style: TextStyle(fontSize: 40),
-                                      )),
-                                      _playersList()
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ],
-                          )
-                        : Row(
-                            mainAxisSize: MainAxisSize.max,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: <Widget>[
-                              Expanded(
-                                child: new Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: <Widget>[
-                                    CircularProgressIndicator()
-                                  ],
-                                ),
-                              ),
-                            ],
-                          );
+                    return new Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: <Widget>[
+                        Container(
+                          width: MediaQuery.of(context).size.width,
+                          height:
+                          MediaQuery.of(context).size.height / 3 * 2,
+                          color: Colors.white,
+                          child: Card(
+                            child: ListView(
+                              shrinkWrap: true,
+                              children: <Widget>[
+                                Center(
+                                    child: Text(
+                                      "Résumé du trajet",
+                                      style: TextStyle(fontSize: 40),
+                                    )),
+                                _parcoursList()
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    );
                   },
                   transitionBuilder:
                       (context, animation, secondaryAnimation, child) {
@@ -325,11 +339,79 @@ class _MapPageState extends State<MapPage> {
                     );
                   },
                 );
-              }
-              //onPressed: () => addMarker(context),
-              //child: Icon(Icons.add),
-              )
-          : CircularProgressIndicator(),
+              },
+              child: Icon(Icons.map_rounded),
+            ),
+            FloatingActionButton(
+              onPressed: () {
+                game.send("getPlayerList", game.roomCode);
+                return showGeneralDialog(
+                  context: context,
+                  barrierDismissible: true,
+                  transitionDuration: Duration(milliseconds: 500),
+                  barrierLabel: MaterialLocalizations.of(context).dialogLabel,
+                  barrierColor: Colors.black.withOpacity(0.5),
+                  pageBuilder: (context, _, __) {
+                    return userTabLoaded
+                        ? new Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: <Widget>[
+                        Container(
+                          width: MediaQuery.of(context).size.width,
+                          height:
+                          MediaQuery.of(context).size.height / 3 * 2,
+                          color: Colors.white,
+                          child: Card(
+                            child: ListView(
+                              shrinkWrap: true,
+                              children: <Widget>[
+                                Center(
+                                    child: Text(
+                                      "Score des joueurs",
+                                      style: TextStyle(fontSize: 40),
+                                    )),
+                                _playersList()
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    )
+                        : Row(
+                      mainAxisSize: MainAxisSize.max,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        Expanded(
+                          child: new Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              CircularProgressIndicator()
+                            ],
+                          ),
+                        ),
+                      ],
+                    );
+                  },
+                  transitionBuilder:
+                      (context, animation, secondaryAnimation, child) {
+                    return SlideTransition(
+                      position: CurvedAnimation(
+                        parent: animation,
+                        curve: Curves.easeOut,
+                      ).drive(Tween<Offset>(
+                        begin: Offset(0, -1.0),
+                        end: Offset.zero,
+                      )),
+                      child: child,
+                    );
+                  },
+                );
+              },
+              child: Icon(Icons.people),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
