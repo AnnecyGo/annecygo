@@ -156,6 +156,12 @@ class _MapPageState extends State<MapPage> {
               builder: (context) => TrueFalsePage(
                   message["data"]["monumentId"], message["data"]["quizz"]),
             ));
+
+        game.send("validateMonument", {
+          "room": game.roomCode,
+          "id": game.playerId,
+          "monumentId": message["data"]["monumentId"]
+        });
         break;
     }
   }
