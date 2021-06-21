@@ -234,8 +234,8 @@ class _MapPageState extends State<MapPage> {
   }
 
   Widget _parcoursList() {
-    List<Widget> children = parcoursList.map((parcoursInfo) {
-      for (var monument in game.monuments) {
+    List<Widget> children = game.monuments.map((monument) {
+
 
         return new Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -243,13 +243,13 @@ class _MapPageState extends State<MapPage> {
             Container(
                 margin: const EdgeInsets.all(20),
                 child: Text(
-                  parcoursInfo[monument["fields"]["tico"]],
+                  monument["fields"]["tico"],
                   style: new TextStyle(fontSize: 25, color: Colors.red),
                 )
             )
           ],
         );
-      }
+
     }).toList();
 
     return new Column(children: children);
@@ -291,6 +291,57 @@ class _MapPageState extends State<MapPage> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
+            FloatingActionButton(
+              onPressed: () {
+                return showGeneralDialog(
+                  context: context,
+                  barrierDismissible: true,
+                  transitionDuration: Duration(milliseconds: 500),
+                  barrierLabel: MaterialLocalizations.of(context).dialogLabel,
+                  barrierColor: Colors.black.withOpacity(0.5),
+                  pageBuilder: (context, _, __) {
+                    return new Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: <Widget>[
+                        Container(
+                          width: MediaQuery.of(context).size.width,
+                          height:
+                          MediaQuery.of(context).size.height / 3 * 2,
+                          color: Colors.white,
+                          child: Card(
+                            child: ListView(
+                              shrinkWrap: true,
+                              children: <Widget>[
+                                Center(
+                                    child: Text(
+                                      "Résumé du trajet",
+                                      style: TextStyle(fontSize: 40),
+                                    )),
+                                _parcoursList()
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    );
+                  },
+                  transitionBuilder:
+                      (context, animation, secondaryAnimation, child) {
+                    return SlideTransition(
+                      position: CurvedAnimation(
+                        parent: animation,
+                        curve: Curves.easeOut,
+                      ).drive(Tween<Offset>(
+                        begin: Offset(0, -1.0),
+                        end: Offset.zero,
+                      )),
+                      child: child,
+                    );
+                  },
+                );
+              },
+              child: Icon(Icons.map_rounded),
+            ),
             FloatingActionButton(
               onPressed: () {
                 game.send("getPlayerList", game.roomCode);
@@ -358,72 +409,6 @@ class _MapPageState extends State<MapPage> {
               },
               child: Icon(Icons.people),
             ),
-            FloatingActionButton(
-              onPressed: () {
-                return showGeneralDialog(
-                  context: context,
-                  barrierDismissible: true,
-                  transitionDuration: Duration(milliseconds: 500),
-                  barrierLabel: MaterialLocalizations.of(context).dialogLabel,
-                  barrierColor: Colors.black.withOpacity(0.5),
-                  pageBuilder: (context, _, __) {
-                    return userTabLoaded
-                        ? new Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: <Widget>[
-                        Container(
-                          width: MediaQuery.of(context).size.width,
-                          height:
-                          MediaQuery.of(context).size.height / 3 * 2,
-                          color: Colors.white,
-                          child: Card(
-                            child: ListView(
-                              shrinkWrap: true,
-                              children: <Widget>[
-                                Center(
-                                    child: Text(
-                                      "Résumé du trajet",
-                                      style: TextStyle(fontSize: 40),
-                                    )),
-                                _parcoursList()
-                              ],
-                            ),
-                          ),
-                        ),
-                      ],
-                    )
-                        : Row(
-                      mainAxisSize: MainAxisSize.max,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: <Widget>[
-                        Expanded(
-                          child: new Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              CircularProgressIndicator()
-                            ],
-                          ),
-                        ),
-                      ],
-                    );
-                  },
-                  transitionBuilder:
-                      (context, animation, secondaryAnimation, child) {
-                    return SlideTransition(
-                      position: CurvedAnimation(
-                        parent: animation,
-                        curve: Curves.easeOut,
-                      ).drive(Tween<Offset>(
-                        begin: Offset(0, -1.0),
-                        end: Offset.zero,
-                      )),
-                      child: child,
-                    );
-                  },
-                );
-              },
-              child: Icon(Icons.map_rounded),
-            )
           ],
         ),
       ),
