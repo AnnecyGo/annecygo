@@ -132,8 +132,6 @@ class _MapPageState extends State<MapPage> {
     super.dispose();
   }
 
-  List<dynamic> parcoursList = <dynamic>[];
-
   List<dynamic> playersList = <dynamic>[];
   List<dynamic> playersPosList = <dynamic>[];
   bool userTabLoaded = false;
@@ -269,10 +267,6 @@ class _MapPageState extends State<MapPage> {
           child: FlutterMap(
             mapController: mapController,
             options: MapOptions(
-              onTap: (latlang) {
-                game.send('newMonumentQuizz',
-                    {"room": game.roomCode, "id": game.playerId});
-              },
               center: LatLng(45.899247, 6.129384),
               zoom: 13.0,
             ),
