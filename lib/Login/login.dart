@@ -12,8 +12,16 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+
   @override
   Widget build(BuildContext context) {
+    return new WillPopScope(
+      onWillPop: () async => false,
+      child: _contentWidget(),
+    );
+  }
+
+  _contentWidget() {
     return new Scaffold(
       body: new Container(
         padding: EdgeInsets.fromLTRB(20, 70, 20, 50),
@@ -31,7 +39,6 @@ class _LoginPageState extends State<LoginPage> {
               'images/annecyGoTitle.png',
               fit: BoxFit.fitWidth,
             ),
-            _buildMessageStartUp(),
             _buildTextFields(),
             _buildButtons(),
           ],
@@ -116,21 +123,6 @@ class _LoginPageState extends State<LoginPage> {
             ),
           ),
         ],
-      ),
-    );
-  }
-
-  Widget _buildMessageStartUp() {
-    return new Flexible(
-      child: Container(
-          child: Text(
-              "Pour commencer à utiliser l'application. Entrez un nom d'Utilisateur et commencez à accumuler des récompenses en explorant les monuments d'Annecy seul ou à plusieurs ! ",
-              overflow: TextOverflow.fade,
-              style: TextStyle(
-                fontWeight: FontWeight.w600,
-                color: Colors.black54,
-                fontSize: 40,
-              ))
       ),
     );
   }
