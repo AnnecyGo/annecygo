@@ -214,17 +214,17 @@ class CategoryView extends StatelessWidget {
                                                   right: 16,
                                               ),
                                               child: Row(
+                                                mainAxisAlignment: MainAxisAlignment.center,
                                                 children: <Widget>[
                                                   Text(
                                                     '${category.reduction} %',
                                                     textAlign: TextAlign.center,
                                                     style: TextStyle(
                                                       fontWeight: FontWeight.w600,
-                                                      fontSize: 18,
+                                                      fontSize: 26,
                                                       letterSpacing: 0.27,
                                                       color: Colors
-                                                          .yellow,
-
+                                                          .red,
                                                     ),
                                                   ),
                                                 ],
