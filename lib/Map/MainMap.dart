@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:annecygo/Games/TrueFalsePage.dart';
+import 'package:annecygo/Reward/EndGame.dart';
 import 'package:annecygo/Reward/rewardPage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
@@ -172,6 +173,13 @@ class _MapPageState extends State<MapPage> {
               context,
               MaterialPageRoute(
                 builder: (context) => RewardPage(),
+              ));
+        } else {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) =>
+                    EndGame(message["winner"], message["score"]),
               ));
         }
         break;
