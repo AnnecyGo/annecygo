@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:annecygo/Games/TrueFalsePage.dart';
+import 'package:annecygo/Reward/rewardPage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong/latlong.dart';
@@ -75,7 +76,7 @@ class _MapPageState extends State<MapPage> {
       // ignore: unused_local_variable
       // ignore: cancel_subscriptions
       StreamSubscription<Position> positionStream =
-      Geolocator.getPositionStream().listen((Position position) {
+          Geolocator.getPositionStream().listen((Position position) {
         //print(position == null ? 'lat + long ' : position.latitude.toString() + ', ' + position.longitude.toString());
 
         game.send('newGPSPosition', {
@@ -118,9 +119,9 @@ class _MapPageState extends State<MapPage> {
     mapController = MapController();
     statefulMapController = StatefulMapController(mapController: mapController);
     statefulMapController.onReady.then((_) => setState(() {
-      ready = true;
-      addMarker(context);
-    }));
+          ready = true;
+          addMarker(context);
+        }));
     sub = statefulMapController.changeFeed.listen((change) => setState(() {}));
     super.initState();
   }
@@ -156,6 +157,7 @@ class _MapPageState extends State<MapPage> {
               builder: (context) => TrueFalsePage(
                   message["data"]["monumentId"], message["data"]["quizz"]),
             ));
+        removeMarker(message["data"]["monumentId"]);
 
         game.send("validateMonument", {
           "room": game.roomCode,
@@ -163,7 +165,21 @@ class _MapPageState extends State<MapPage> {
           "monumentId": message["data"]["monumentId"]
         });
         break;
+
+      case "endGame":
+        if (message["screen"]) {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => RewardPage(),
+              ));
+        }
+        break;
     }
+  }
+
+  removeMarker(id) {
+    statefulMapController.removeMarker(name: id);
   }
 
   _refreshPlayersPos(list) {
@@ -233,21 +249,17 @@ class _MapPageState extends State<MapPage> {
 
   Widget _parcoursList() {
     List<Widget> children = game.monuments.map((monument) {
-
-
-        return new Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Container(
-                margin: const EdgeInsets.all(20),
-                child: Text(
-                  monument["fields"]["tico"],
-                  style: new TextStyle(fontSize: 25, color: Colors.red),
-                )
-            )
-          ],
-        );
-
+      return new Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Container(
+              margin: const EdgeInsets.all(20),
+              child: Text(
+                monument["fields"]["tico"],
+                style: new TextStyle(fontSize: 25, color: Colors.red),
+              ))
+        ],
+      );
     }).toList();
 
     return new Column(children: children);
@@ -265,21 +277,19 @@ class _MapPageState extends State<MapPage> {
     return Scaffold(
       body: SafeArea(
           child: FlutterMap(
-            mapController: mapController,
-            options: MapOptions(
-              center: LatLng(45.899247, 6.129384),
-              zoom: 13.0,
-            ),
-            layers: [
-              statefulMapController.tileLayer,
-              MarkerLayerOptions(
-                markers: statefulMapController.markers,
-              ),
-            ],
-          )
-      ),
-      floatingActionButtonLocation:
-      FloatingActionButtonLocation.centerDocked,
+        mapController: mapController,
+        options: MapOptions(
+          center: LatLng(45.899247, 6.129384),
+          zoom: 13.0,
+        ),
+        layers: [
+          statefulMapController.tileLayer,
+          MarkerLayerOptions(
+            markers: statefulMapController.markers,
+          ),
+        ],
+      )),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Row(
@@ -299,8 +309,7 @@ class _MapPageState extends State<MapPage> {
                       children: <Widget>[
                         Container(
                           width: MediaQuery.of(context).size.width,
-                          height:
-                          MediaQuery.of(context).size.height / 3 * 2,
+                          height: MediaQuery.of(context).size.height / 3 * 2,
                           color: Colors.white,
                           child: Card(
                             child: ListView(
@@ -308,9 +317,9 @@ class _MapPageState extends State<MapPage> {
                               children: <Widget>[
                                 Center(
                                     child: Text(
-                                      "Résumé du trajet",
-                                      style: TextStyle(fontSize: 40),
-                                    )),
+                                  "Résumé du trajet",
+                                  style: TextStyle(fontSize: 40),
+                                )),
                                 _parcoursList()
                               ],
                             ),
@@ -348,43 +357,43 @@ class _MapPageState extends State<MapPage> {
                   pageBuilder: (context, _, __) {
                     return userTabLoaded
                         ? new Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: <Widget>[
-                        Container(
-                          width: MediaQuery.of(context).size.width,
-                          height:
-                          MediaQuery.of(context).size.height / 3 * 2,
-                          color: Colors.white,
-                          child: Card(
-                            child: ListView(
-                              shrinkWrap: true,
-                              children: <Widget>[
-                                Center(
-                                    child: Text(
-                                      "Score des joueurs",
-                                      style: TextStyle(fontSize: 40),
-                                    )),
-                                _playersList()
-                              ],
-                            ),
-                          ),
-                        ),
-                      ],
-                    )
-                        : Row(
-                      mainAxisSize: MainAxisSize.max,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: <Widget>[
-                        Expanded(
-                          child: new Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.start,
                             children: <Widget>[
-                              CircularProgressIndicator()
+                              Container(
+                                width: MediaQuery.of(context).size.width,
+                                height:
+                                    MediaQuery.of(context).size.height / 3 * 2,
+                                color: Colors.white,
+                                child: Card(
+                                  child: ListView(
+                                    shrinkWrap: true,
+                                    children: <Widget>[
+                                      Center(
+                                          child: Text(
+                                        "Score des joueurs",
+                                        style: TextStyle(fontSize: 40),
+                                      )),
+                                      _playersList()
+                                    ],
+                                  ),
+                                ),
+                              ),
                             ],
-                          ),
-                        ),
-                      ],
-                    );
+                          )
+                        : Row(
+                            mainAxisSize: MainAxisSize.max,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: <Widget>[
+                              Expanded(
+                                child: new Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: <Widget>[
+                                    CircularProgressIndicator()
+                                  ],
+                                ),
+                              ),
+                            ],
+                          );
                   },
                   transitionBuilder:
                       (context, animation, secondaryAnimation, child) {
