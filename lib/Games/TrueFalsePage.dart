@@ -197,7 +197,7 @@ class _TrueFalsePageState extends State<TrueFalsePage> {
               onPressed: () {
                 Navigator.of(context).pop();
                 Navigator.pop(context);
-                game.send("newUserScore", {
+                game.send("checkEndResponse", {
                   "room": game.roomCode,
                   "id": game.playerId,
                   "monumentId": widget.monumentId
@@ -214,12 +214,24 @@ class _TrueFalsePageState extends State<TrueFalsePage> {
     if (widget.currentQuestion["answer"] == userAnswer) {
       alertResult(
           "Bravo c'est une bonne réponse", widget.currentQuestion["comment"]);
+      game.send("newUserScore", {
+        "room": game.roomCode,
+        "answer": true,
+        "id": game.playerId,
+        "monumentId": widget.monumentId
+      });
       /*Navigator.push(
           context,
           MaterialPageRoute(
               builder: (context) => RewardPage()));*/
     } else {
       alertResult("C'est perdu dommage", widget.currentQuestion["comment"]);
+      game.send("newUserScore", {
+        "room": game.roomCode,
+        "answer": false,
+        "id": game.playerId,
+        "monumentId": widget.monumentId
+      });
     }
   }
 }
