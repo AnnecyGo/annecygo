@@ -8,7 +8,7 @@
     <application
         android:usesCleartextTraffic="true"
         android:name="io.flutter.app.FlutterApplication"
-        android:label="annecygo"
+        android:label="Annecy GO"
         android:icon="@mipmap/launcher_icon">
 
         <activity
