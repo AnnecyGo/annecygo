@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'Games/TrueFalsePage.dart';
 import 'Login/login.dart';
 import 'Map/MainMap.dart';
+import 'PagesExplication/firstPage.dart';
 import 'WebSockets/wsCommunication.dart';
 import 'WebSockets/config.dart';
 
@@ -27,7 +28,7 @@ class MyApp extends StatelessWidget {
           button: TextStyle(fontStyle: FontStyle.italic),
         ),
       ),
-      home: LoginPage(),
+      home: FirstPage(),
     );
   }
 }
