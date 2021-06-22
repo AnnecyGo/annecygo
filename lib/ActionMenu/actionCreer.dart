@@ -1,3 +1,4 @@
+import 'package:annecygo/PagesExplication/PageLetsGo.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:flutter/services.dart';
@@ -24,7 +25,7 @@ class GenerateScreenState extends State<GenerateScreen> {
   List<dynamic> playersList = <dynamic>[];
 
   Future navigateToMap(context) async {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => MapPage()));
+    Navigator.push(context, MaterialPageRoute(builder: (context) => GoPage()));
   }
 
   @override
