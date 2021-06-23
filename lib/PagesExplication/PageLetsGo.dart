@@ -34,6 +34,7 @@ class _GoPageState extends State<GoPage> {
       backgroundColor: Colors.redAccent,
       body: new Center(
         child: new Container(
+          padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
           decoration: BoxDecoration(
             gradient: LinearGradient(
               begin: Alignment.topLeft,
@@ -53,8 +54,9 @@ class _GoPageState extends State<GoPage> {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Container(
-                padding: EdgeInsets.fromLTRB(20, 20, 20, 20),
+              Expanded(
+                flex: 1,
+                child:     Container(
                 child: Text("But du jeu",
                     textAlign: TextAlign.center,
                     style: TextStyle(
@@ -62,33 +64,44 @@ class _GoPageState extends State<GoPage> {
                       fontSize: 45,
                     )),
               ),
-              Container(
-                padding: EdgeInsets.fromLTRB(20, 20, 20, 20),
-                child: Text(
-                    "Pour gagner la partie, il faudra que tu passes par trois points différents qui sont des monuments d'Annecy.\n"
-                        "Lorsque tu arrives vers un monument, un Quiz s'affiche sur ton smartphone, il faut répondre pour gagner des points.\n"
-                        "Ces points t'aide à gagner un bon de réduction dans la liste des restaurants, bars et autres petits commerces partenaires.\n"
-                        "Nous te laissons le choix du chemin à parcourir entrer les différents points, pour plus de liberté !",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 25,
-                    )
+              ),
+              Expanded(
+                flex: 7,
+                child:
+              SingleChildScrollView(
+                padding: EdgeInsets.fromLTRB(20, 0, 20, 10),
+                child:
+                Text("Pour gagner la partie, il faudra que tu passes par trois points différents qui sont des monuments d'Annecy.\n"
+                    "Lorsque tu arrives vers un monument, un Quiz s'affiche sur ton smartphone, il faut répondre pour gagner des points.\n"
+                    "Ces points t'aide à gagner un bon de réduction dans la liste des restaurants, bars et autres petits commerces partenaires.\n"
+                    "Nous te laissons le choix du chemin à parcourir entrer les différents points, pour plus de liberté !",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 25,
+                  ),
                 ),
               ),
-              Container(
-                padding: EdgeInsets.fromLTRB(20, 20, 20, 20),
+              ),
+              Expanded(
+                flex: 1,
+                child:  Container(
+
+                padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
                 child: Text(
-                        "Que la partie commence !",
+                    "Que la partie commence !",
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 30,
                     )
                 ),
-              ),
+              ),),
+              Expanded(
+                flex: 1,
+                child:
               Container(
-                margin: const EdgeInsets.all(20.0),
+                margin: const EdgeInsets.fromLTRB(20, 0 , 20, 0),
                 child: ButtonTheme(
                   minWidth: 200.0,
                   child: new ElevatedButton(
@@ -117,6 +130,7 @@ class _GoPageState extends State<GoPage> {
                   ),
                 ),
               ),
+              )
             ],
           ),
         ),
