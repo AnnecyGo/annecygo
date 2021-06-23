@@ -1,8 +1,14 @@
+
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import '../WebSockets/wsCommunication.dart';
 
 class ChoicePage extends StatefulWidget {
+
+  final String monumentId;
+  const ChoicePage(this.monumentId);
+
   @override
   _ChoicePageState createState() => _ChoicePageState();
 }
@@ -10,6 +16,7 @@ class ChoicePage extends StatefulWidget {
 class Answer {
   var reponse;
   var answer;
+
   Answer(String uneReponse, bool uneAnswer) {
     reponse = uneReponse;
     answer = uneAnswer;
@@ -18,9 +25,11 @@ class Answer {
 
 class Choice {
   var question;
+  var comment;
   List<Answer> answers;
-  Choice(String uneQuestion, List<Answer> lesAnswers) {
+  Choice(String uneQuestion ,String unComment, List<Answer> lesAnswers) {
     question = uneQuestion;
+    comment = unComment;
     answers = lesAnswers;
   }
 }
@@ -37,29 +46,27 @@ class _ChoicePageState extends State<ChoicePage> {
     mesChoix.add(Answer("1664", false));
 
     Choice choice1 = new Choice(
-        "En quelle année Annecy a été rattaché à la savoie ?", mesChoix);
+        "En quelle année Annecy a été rattaché à la savoie ?","Commentaire à faire", mesChoix);
 
     List<Answer> mesChoix2 = new List();
     mesChoix.add(Answer("27,59 km²", true));
     mesChoix.add(Answer("18,69 km²", false));
     mesChoix.add(Answer("55,17 km²", false));
     Choice choice2 = new Choice(
-        "En quelle année la toiture du palais de l'île a été renové ?",
-        mesChoix2);
+        "En quelle année la toiture du palais de l'île a été renové ?","Commentaire à faire",mesChoix2);
 
     List<Answer> mesChoix3 = new List();
     mesChoix.add(Answer("2017", true));
     mesChoix.add(Answer("2009", false));
     mesChoix.add(Answer("1998", false));
     Choice choice3 = new Choice(
-        "En quelle année la toiture du palais de l'île a été renovée ?",
-        mesChoix3);
+        "En quelle année la toiture du palais de l'île a été renovée ?","Commentaire à faire", mesChoix3);
 
     choices.add(choice1);
     choices.add(choice2);
     choices.add(choice3);
 
-    currentChoice = choices[Random().nextInt(choices.length)];
+    currentChoice = choices[Random().nextInt(choices.length -1)];
 
     return new Scaffold(
       backgroundColor: Colors.redAccent,
@@ -216,17 +223,21 @@ class _ChoicePageState extends State<ChoicePage> {
     );
   }
 
-  Future<void> alertResult(String result) async {
+  Future<void> alertResult(String title, String comment) async {
     return showDialog<void>(
       context: context,
       barrierDismissible: false, // user must tap button!
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Fin du jeu'),
+          title: Text(title,
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 48)),
           content: SingleChildScrollView(
             child: ListBody(
               children: <Widget>[
-                Text(result),
+                Text(
+                  comment,
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 32),
+                )
               ],
             ),
           ),
@@ -235,6 +246,12 @@ class _ChoicePageState extends State<ChoicePage> {
               child: Text('Ok'),
               onPressed: () {
                 Navigator.of(context).pop();
+                Navigator.pop(context);
+                game.send("checkEndResponse", {
+                  "room": game.roomCode,
+                  "id": game.playerId,
+                  "monumentId": widget.monumentId
+                });
               },
             ),
           ],
@@ -243,14 +260,26 @@ class _ChoicePageState extends State<ChoicePage> {
     );
   }
 
-  void answerValidation(
-    int i,
-    bool userAnswer,
-  ) {
+  void answerValidation(int i, bool userAnswer) {
     if (currentChoice.answers[i].answer == userAnswer) {
-      alertResult("Vous avez gagné");
+      alertResult(
+          "Bravo c'est une bonne réponse", currentChoice.comment);
+      game.send("newUserScore", {
+        "room": game.roomCode,
+        "answer": true,
+        "id": game.playerId,
+        "monumentId": widget.monumentId
+      });
     } else {
-      alertResult("C'est perdu");
+      alertResult("C'est perdu dommage", currentChoice.comment);
+      game.send("newUserScore", {
+        "room": game.roomCode,
+        "answer": false,
+        "id": game.playerId,
+        "monumentId": widget.monumentId
+      });
     }
   }
 }
+
+

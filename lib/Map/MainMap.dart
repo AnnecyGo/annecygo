@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:math';
 
+import 'package:annecygo/Games/ChoicesPage.dart';
 import 'package:annecygo/Games/TrueFalsePage.dart';
 import 'package:annecygo/Reward/EndGame.dart';
 import 'package:annecygo/Reward/rewardPage.dart';
@@ -152,19 +154,7 @@ class _MapPageState extends State<MapPage> {
         break;
 
       case "newMonumentQuizz":
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => TrueFalsePage(
-                  message["data"]["monumentId"], message["data"]["quizz"]),
-            ));
-        removeMarker(message["data"]["monumentId"]);
-
-        game.send("validateMonument", {
-          "room": game.roomCode,
-          "id": game.playerId,
-          "monumentId": message["data"]["monumentId"]
-        });
+         randomMiniGames(message);
         break;
 
       case "endGame":
@@ -186,6 +176,39 @@ class _MapPageState extends State<MapPage> {
     }
   }
 
+  randomMiniGames(message){
+    Random random = new Random();
+    int randomNumber = random.nextInt(2) + 1;
+    print("randomNumber");
+    print(randomNumber);
+    switch (randomNumber){
+      case 1:
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => TrueFalsePage(
+                  message["data"]["monumentId"], message["data"]["quizz"]),
+            ));
+        break;
+      case 2:
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ChoicePage(message["data"]["monumentId"]),
+            ));
+        break;
+
+    }
+    
+
+    removeMarker(message["data"]["monumentId"]);
+
+    game.send("validateMonument", {
+      "room": game.roomCode,
+      "id": game.playerId,
+      "monumentId": message["data"]["monumentId"]
+    });
+  }
   removeMarker(id) {
     statefulMapController.removeMarker(name: id);
   }
