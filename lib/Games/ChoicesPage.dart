@@ -66,7 +66,7 @@ class _ChoicePageState extends State<ChoicePage> {
     choices.add(choice2);
     choices.add(choice3);
 
-    currentChoice = choices[Random().nextInt(choices.length -1)];
+    currentChoice = choices[Random().nextInt(choices.length)];
 
     return new Scaffold(
       backgroundColor: Colors.redAccent,
