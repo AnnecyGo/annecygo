@@ -40,7 +40,7 @@ SPEC CHECKSUMS:
   flutter_statusbarcolor: 8afb1071ed8c58be929f1e32b36c629771fd2259
   geolocator: f5e3de65e241caba7ce3e8a618803387bda73384
   MTBBarcodeScanner: f453b33c4b7dfe545d8c6484ed744d55671788cb
-  path_provider: f96fff6166a8867510d2c25fdcc346327cc4b259
+  path_provider: abfe2b5c733d04e238b0d8691db0cfd63a27a93c
 
 PODFILE CHECKSUM: aafe91acc616949ddb318b77800a7f51bffa2a4c
 
