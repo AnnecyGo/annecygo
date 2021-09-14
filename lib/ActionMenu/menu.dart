@@ -1,20 +1,46 @@
-import 'package:annecygo/Games/TrueFalsePage.dart';
 import 'package:annecygo/Style/Element.dart';
+import 'package:annecygo/main.dart';
+import 'package:barcode_scan_fix/barcode_scan.dart';
 import 'package:flutter/material.dart';
-import 'package:annecygo/Map/MainMap.dart';
-import '../ActionMenu/menu.dart';
-import '../WebSockets/wsCommunication.dart';
-import '../main.dart';
-import '../Settings/settings.dart';
-
 import 'package:flutter_svg/flutter_svg.dart';
+import 'waitingRoom.dart';
+import '../WebSockets/wsCommunication.dart';
+import '../WebSockets/wsNotifs.dart';
 
-class LoginPage extends StatefulWidget {
+class ActionMenuPage extends StatefulWidget {
   @override
-  _LoginPageState createState() => _LoginPageState();
+  _ActionMenuPageState createState() => _ActionMenuPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _ActionMenuPageState extends State<ActionMenuPage> {
+  @override
+  void initState() {
+    if (game.roomCode != "") {
+      print("[Debug Menu] room: " + game.roomCode);
+    } else {
+      print("[Debug Menu] No room");
+    }
+    super.initState();
+    game.addListener(_onGameDataReceived);
+  }
+
+  @override
+  void dispose() {
+    game.removeListener(_onGameDataReceived);
+    super.dispose();
+  }
+
+  _onGameDataReceived(message) {
+    switch (message["action"]) {
+      case "roomFound":
+        Navigator.push(context,
+                MaterialPageRoute(builder: (context) => GenerateScreen()))
+            .then((value) {});
+        setState(() {});
+        break;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Form(
@@ -70,7 +96,7 @@ class _LoginPageState extends State<LoginPage> {
                           child: Padding(
                             padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
                             child: Text(
-                              "Annecy GO",
+                              "Bienvenue " + game.playerName,
                               style: TextStyle(
                                   color: Color(0xFFEF3629),
                                   fontSize: 25.0,
@@ -111,69 +137,17 @@ class _LoginPageState extends State<LoginPage> {
                               child: Column(
                                 mainAxisSize: MainAxisSize.max,
                                 mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
-                                  Row(
-                                    mainAxisSize: MainAxisSize.max,
-                                    children: [
-                                      Expanded(
-                                        child: new Container(
-                                            alignment: Alignment.centerLeft,
-                                            decoration: new BoxDecoration(
-                                                color: Colors.transparent,
-                                                borderRadius: new BorderRadius
-                                                        .all(
-                                                    new Radius.circular(23))),
-                                            child: new Directionality(
-                                                textDirection:
-                                                    TextDirection.ltr,
-                                                child: new TextField(
-                                                  controller: _pseudoFilter,
-                                                  autofocus: false,
-                                                  style: new TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                      fontSize: 30.0,
-                                                      color: Colors.white),
-                                                  decoration:
-                                                      new InputDecoration(
-                                                    filled: true,
-                                                    fillColor:
-                                                        Color(0xFFF7898F),
-                                                    hintText: 'Pseudo',
-                                                    contentPadding:
-                                                        const EdgeInsets.only(
-                                                            left: 20.0,
-                                                            bottom: 15.0,
-                                                            right: 20.0,
-                                                            top: 15.0),
-                                                    focusedBorder:
-                                                        OutlineInputBorder(
-                                                      borderSide:
-                                                          new BorderSide(
-                                                              color: Colors
-                                                                  .transparent),
-                                                      borderRadius:
-                                                          new BorderRadius
-                                                              .circular(23),
-                                                    ),
-                                                    enabledBorder:
-                                                        UnderlineInputBorder(
-                                                      borderSide:
-                                                          new BorderSide(
-                                                              color:
-                                                                  Colors.red),
-                                                      borderRadius:
-                                                          new BorderRadius
-                                                              .circular(23),
-                                                    ),
-                                                  ),
-                                                ))),
-                                      )
-                                    ],
+                                  Text(
+                                    "Je veux ...",
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 50,
+                                        fontWeight: FontWeight.w900),
                                   ),
                                   Padding(
-                                    padding: EdgeInsets.fromLTRB(0, 40, 0, 0),
+                                    padding: EdgeInsets.fromLTRB(0, 20, 0, 20),
                                     child: Row(
                                       mainAxisSize: MainAxisSize.max,
                                       children: [
@@ -181,13 +155,38 @@ class _LoginPageState extends State<LoginPage> {
                                           child: Align(
                                             alignment: Alignment(0, 0),
                                             child: CustomButton(
-                                                text: "Jouer",
-                                                onPressed: _playPressed),
+                                                text: "Créer",
+                                                fontSize: 30,
+                                                icon: Icons.add,
+                                                onPressed: _createRoom),
                                           ),
                                         )
                                       ],
                                     ),
-                                  )
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.fromLTRB(0, 20, 0, 20),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.max,
+                                      children: [
+                                        Expanded(
+                                          child: Align(
+                                            alignment: Alignment(0, 0),
+                                            child: CustomButton(
+                                                text: "Rejoindre",
+                                                fontSize: 30,
+                                                icon: Icons.qr_code_scanner,
+                                                onPressed: _joinRoom),
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                  Text("une partie",
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 50,
+                                          fontWeight: FontWeight.w900)),
                                 ],
                               ),
                             ),
@@ -226,64 +225,16 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  final TextEditingController _pseudoFilter = new TextEditingController();
-  String _pseudo = "";
-
-  void _pseudoListen() {
-    if (_pseudoFilter.text.isEmpty) {
-      _pseudo = "";
-    } else {
-      _pseudo = _pseudoFilter.text;
-    }
+  void _createRoom() {
+    game.send('createNewGame', game.playerName);
+    Navigator.push(
+            context, MaterialPageRoute(builder: (context) => GenerateScreen()))
+        .then((value) {});
+    ;
   }
 
-  _LoginPageState() {
-    _pseudoFilter.addListener(_pseudoListen);
-  }
-
-  Future<void> alertResult(String result) async {
-    return showDialog<void>(
-      context: context,
-      barrierDismissible: false, // user must tap button!
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text(
-            'Pseudo invalide',
-            style: TextStyle(fontWeight: FontWeight.w600),
-          ),
-          content: SingleChildScrollView(
-            child: ListBody(
-              children: <Widget>[
-                Text(result),
-              ],
-            ),
-          ),
-          actions: <Widget>[
-            TextButton(
-              child: Text('Ok',
-                  style: TextStyle(
-                      fontWeight: FontWeight.w900,
-                      fontStyle: FontStyle.normal,
-                      fontSize: 20)),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  void _playPressed() {
-    if (_pseudo != null && _pseudo != "") {
-      game.setPlayerName(_pseudo);
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => ActionMenuPage()),
-      );
-    } else {
-      alertResult("Veuillez renseigner un pseudo valide");
-    }
+  void _joinRoom() async {
+    String codeScanner = await BarcodeScanner.scan();
+    game.send('joinGame', {"name": game.playerName, "code": codeScanner});
   }
 }

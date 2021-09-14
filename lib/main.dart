@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Annecy Go',
       theme: ThemeData(
-        fontFamily: 'Big Noodle',
+        fontFamily: 'D DIN',
         primaryColor: Colors.white,
         accentColor: Colors.redAccent,
         visualDensity: VisualDensity.adaptivePlatformDensity,

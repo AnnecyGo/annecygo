@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="390" height="76" viewBox="0 0 390 76">
+  <defs>
+    <filter id="Ellipse_17" x="-181" y="-521" width="753" height="599" filterUnits="userSpaceOnUse">
+      <feOffset dy="3" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feFlood flood-opacity="0.161"/>
+      <feComposite operator="in" in2="blur"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+    <clipPath id="clip-iPhone_12_12_Pro_2">
+      <rect width="390" height="76"/>
+    </clipPath>
+  </defs>
+  <g id="iPhone_12_12_Pro_2" data-name="iPhone 12, 12 Pro – 2" clip-path="url(#clip-iPhone_12_12_Pro_2)">
+    <rect width="390" height="76" fill="#fff"/>
+    <rect id="Rectangle_42" data-name="Rectangle 42" width="390" height="812" transform="translate(0 -36)" fill="#f9b126"/>
+    <g transform="matrix(1, 0, 0, 1, 0, 0)" filter="url(#Ellipse_17)">
+      <ellipse id="Ellipse_17-2" data-name="Ellipse 17" cx="367.5" cy="290.5" rx="367.5" ry="290.5" transform="translate(-172 -515)" fill="#f12d37"/>
+    </g>
+  </g>
+</svg>
